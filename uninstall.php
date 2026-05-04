@@ -6,11 +6,32 @@
  * by default for legal record-keeping. Set the AYUDAWP_EUW_DELETE_DATA constant
  * to true in wp-config.php to wipe everything, including stored requests.
  *
+ * Migration safeguard: if another installation of this plugin lives in the
+ * canonical "eu-withdrawal-compliance" folder, this script preserves all data
+ * so the user can delete a stale folder (e.g. "eu-withdrawal-compliance-main"
+ * downloaded from a GitHub source ZIP before the Releases workflow existed)
+ * without losing settings or logs. The canonical install will pick everything
+ * up automatically.
+ *
  * @package AyudaWP_EU_Withdrawal
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
+}
+
+// Detect a parallel install at the canonical slug. If this uninstall is
+// running for the "wrong" folder (e.g. -main suffix), keep the data so the
+// canonical instance can take over.
+$canonical_dir = defined( 'WP_PLUGIN_DIR' )
+	? trailingslashit( WP_PLUGIN_DIR ) . 'eu-withdrawal-compliance'
+	: '';
+
+$current_dir = untrailingslashit( __DIR__ );
+
+if ( $canonical_dir && $canonical_dir !== $current_dir && is_dir( $canonical_dir ) ) {
+	// A canonical install exists alongside this one. Preserve everything.
+	return;
 }
 
 // Remove plugin options.
