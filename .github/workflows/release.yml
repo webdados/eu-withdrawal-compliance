@@ -33,8 +33,11 @@ jobs:
             -x "*/.git/*" \
             -x "*/.github/*" \
             -x "*/.DS_Store" \
+            -x "*/.DS_Store/*" \
+            -x "*.DS_Store" \
             -x "*/node_modules/*" \
             -x "*/tests/*" \
+            -x "*/RELEASING.md" \
             -x "*/*.zip"
 
       - name: Attach ZIP to the GitHub Release
