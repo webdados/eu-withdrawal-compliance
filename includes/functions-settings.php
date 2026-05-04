@@ -115,12 +115,29 @@ function ayudawp_euw_field_page_callback() {
 
 	$selected = (int) get_option( 'ayudawp_euw_page_id', 0 );
 
-	wp_dropdown_pages(
+	$dropdown = wp_dropdown_pages(
 		array(
-			'name'             => 'ayudawp_euw_page_id',
-			'show_option_none' => __( '— Select a page —', 'eu-withdrawal-compliance' ),
+			'name'              => 'ayudawp_euw_page_id',
+			'show_option_none'  => __( '— Select a page —', 'eu-withdrawal-compliance' ),
 			'option_none_value' => '0',
-			'selected'         => $selected,
+			'selected'          => $selected,
+			'echo'              => 0,
+		)
+	);
+
+	echo wp_kses(
+		$dropdown,
+		array(
+			'select' => array(
+				'name'  => true,
+				'id'    => true,
+				'class' => true,
+			),
+			'option' => array(
+				'class'    => true,
+				'value'    => true,
+				'selected' => true,
+			),
 		)
 	);
 
