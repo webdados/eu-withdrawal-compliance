@@ -1,0 +1,43 @@
+name: Build plugin ZIP on release
+
+# When a Release is published in GitHub, this workflow packages the plugin
+# into a ZIP whose internal root directory is the official plugin slug
+# (eu-withdrawal-compliance/), so users can upload it to WordPress and have
+# it installed at wp-content/plugins/eu-withdrawal-compliance/ — the same
+# slug we will use on WordPress.org. This is what makes future updates
+# transparent for users who installed from GitHub.
+#
+# Without this workflow GitHub's auto-generated zip would expose a folder
+# named "eu-withdrawal-compliance-main", which would land the plugin in a
+# different slug and break automatic updates.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo into the plugin slug folder
+        uses: actions/checkout@v4
+        with:
+          path: eu-withdrawal-compliance
+
+      - name: Create release ZIP with the correct internal folder
+        run: |
+          zip -r eu-withdrawal-compliance.zip eu-withdrawal-compliance \
+            -x "*/.git/*" \
+            -x "*/.github/*" \
+            -x "*/.DS_Store" \
+            -x "*/node_modules/*" \
+            -x "*/tests/*" \
+            -x "*/*.zip"
+
+      - name: Attach ZIP to the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: eu-withdrawal-compliance.zip
