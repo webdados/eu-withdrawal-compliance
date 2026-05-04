@@ -29,9 +29,11 @@ WordPress plugin that adds the EU online withdrawal function required by Directi
 
 #### From GitHub release
 
-1. Download the latest `.zip` from [this direct link](https://github.com/fernandotellado/eu-withdrawal-compliance/archive/refs/heads/main.zip).
+1. Download the latest `eu-withdrawal-compliance.zip` from [the latest release](https://github.com/fernandotellado/eu-withdrawal-compliance/releases/latest).
 2. In your WordPress admin, go to **Plugins → Add New → Upload Plugin**.
 3. Upload the zip and activate.
+
+> ⚠️ Do **not** use the green "Code → Download ZIP" button on the repo page. That zip extracts as `eu-withdrawal-compliance-main/` and would install the plugin under the wrong slug, breaking future updates from WordPress.org.
 
 #### From source
 
@@ -60,6 +62,15 @@ After activation:
 | Action | Purpose |
 |--------|---------|
 | `ayudawp_euw_after_submission` | Fires after a withdrawal request has been processed. Receives the CPT ID and the submission data array. |
+
+### Migrating from the old "Download ZIP" install
+
+If you installed an early version of this plugin by clicking the green **Code → Download ZIP** button on GitHub, your install lives in `wp-content/plugins/eu-withdrawal-compliance-main/`. That is the wrong slug and it will block automatic updates from WordPress.org. Migrate like this without losing any data:
+
+1. **Deactivate** the existing plugin (the one labeled with the `-main` suffix). Do **not** click "Delete" yet.
+2. Upload the new `eu-withdrawal-compliance.zip` from the [latest release](https://github.com/fernandotellado/eu-withdrawal-compliance/releases/latest) via **Plugins → Add New → Upload Plugin**.
+3. **Activate** the new plugin. It will reuse the existing settings, the existing withdrawal page and the existing log of requests automatically.
+4. Now go back to **Plugins**, find the old `-main` entry and click **Delete**. The plugin's uninstall script detects the canonical install next to it and keeps every option intact.
 
 ### Compliance status
 
@@ -108,9 +119,11 @@ Plugin de WordPress que añade la función online de desistimiento exigida por l
 
 #### Desde GitHub (Releases)
 
-1. Descarga el `.zip` más reciente desde [este enlace directo](https://github.com/fernandotellado/eu-withdrawal-compliance/archive/refs/heads/main.zip).
+1. Descarga el archivo `eu-withdrawal-compliance.zip` desde [la última release](https://github.com/fernandotellado/eu-withdrawal-compliance/releases/latest).
 2. En el panel de WordPress, ve a **Plugins → Añadir nuevo → Subir plugin**.
 3. Sube el zip y activa.
+
+> ⚠️ **No uses** el botón verde "Code → Download ZIP" del repo. Ese zip se descomprime como `eu-withdrawal-compliance-main/` e instalaría el plugin con un slug incorrecto, rompiendo las actualizaciones futuras desde WordPress.org.
 
 #### Desde el código fuente
 
@@ -139,6 +152,15 @@ Tras la activación:
 | Acción | Para qué sirve |
 |--------|---------|
 | `ayudawp_euw_after_submission` | Se dispara tras procesar una solicitud de desistimiento. Recibe el ID del CPT y el array con los datos del envío. |
+
+### Migrar desde la instalación antigua de "Download ZIP"
+
+Si instalaste una primera versión del plugin pulsando el botón verde **Code → Download ZIP** de GitHub, tu instalación vive en `wp-content/plugins/eu-withdrawal-compliance-main/`. Ese slug es incorrecto y bloquea las actualizaciones automáticas desde WordPress.org. Migra así, sin perder ningún dato:
+
+1. **Desactiva** el plugin existente (el que termina en `-main`). **No** pulses "Eliminar" todavía.
+2. Sube el nuevo `eu-withdrawal-compliance.zip` desde la [última release](https://github.com/fernandotellado/eu-withdrawal-compliance/releases/latest) en **Plugins → Añadir nuevo → Subir plugin**.
+3. **Activa** el plugin nuevo. Reutilizará automáticamente los ajustes, la página de desistimiento existente y el log de solicitudes.
+4. Vuelve a **Plugins**, busca la entrada con sufijo `-main` y pulsa **Eliminar**. El script de desinstalación detecta que existe la instalación canónica al lado y conserva todas las opciones intactas.
 
 ### Estado de cumplimiento
 
