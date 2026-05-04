@@ -27,10 +27,15 @@ function ayudawp_euw_render_form( $atts = array() ) {
 		)
 	);
 
-	// Show success message if the form was just submitted.
+	// Show success message if the form was just submitted. These GET params
+	// are only used to display a confirmation/error message after a form
+	// submit redirect; the actual form processing happens server-side with
+	// nonce verification in functions-handler.php.
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	$success = isset( $_GET['ayudawp_euw_sent'] )
 		&& '1' === sanitize_text_field( wp_unslash( $_GET['ayudawp_euw_sent'] ) );
 	$error   = isset( $_GET['ayudawp_euw_error'] ) ? sanitize_key( wp_unslash( $_GET['ayudawp_euw_error'] ) ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	if ( $success ) {
 		return '<div class="ayudawp-euw-wrapper"><div class="ayudawp-euw-notice ayudawp-euw-notice--success" role="status"><p>' .
@@ -117,8 +122,8 @@ function ayudawp_euw_render_form( $atts = array() ) {
 						<?php
 						if ( $privacy_url ) {
 							printf(
-								/* translators: %s: privacy policy URL. */
 								wp_kses(
+									/* translators: %s: privacy policy URL. */
 									__( 'I have read and accept the <a href="%s" target="_blank" rel="noopener">privacy policy</a>.', 'eu-withdrawal-compliance' ),
 									array(
 										'a' => array(
