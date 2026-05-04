@@ -23,13 +23,17 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // Detect a parallel install at the canonical slug. If this uninstall is
 // running for the "wrong" folder (e.g. -main suffix), keep the data so the
 // canonical instance can take over.
-$canonical_dir = defined( 'WP_PLUGIN_DIR' )
+$ayudawp_euw_canonical_dir = defined( 'WP_PLUGIN_DIR' )
 	? trailingslashit( WP_PLUGIN_DIR ) . 'eu-withdrawal-compliance'
 	: '';
 
-$current_dir = untrailingslashit( __DIR__ );
+$ayudawp_euw_current_dir = untrailingslashit( __DIR__ );
 
-if ( $canonical_dir && $canonical_dir !== $current_dir && is_dir( $canonical_dir ) ) {
+if (
+	$ayudawp_euw_canonical_dir
+	&& $ayudawp_euw_canonical_dir !== $ayudawp_euw_current_dir
+	&& is_dir( $ayudawp_euw_canonical_dir )
+) {
 	// A canonical install exists alongside this one. Preserve everything.
 	return;
 }
@@ -37,6 +41,7 @@ if ( $canonical_dir && $canonical_dir !== $current_dir && is_dir( $canonical_dir
 // Remove plugin options.
 delete_option( 'ayudawp_euw_notify_email' );
 delete_option( 'ayudawp_euw_page_id' );
+delete_option( 'ayudawp_euw_version' );
 
 // Optionally delete all withdrawal records.
 if ( defined( 'AYUDAWP_EUW_DELETE_DATA' ) && AYUDAWP_EUW_DELETE_DATA ) {
