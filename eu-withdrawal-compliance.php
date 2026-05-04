@@ -45,32 +45,35 @@ require_once AYUDAWP_EUW_DIR . 'includes/functions-emails-wc.php';
 require_once AYUDAWP_EUW_DIR . 'includes/class-aeuw-promo-banner.php';
 
 /**
- * Load plugin translations.
- *
- * Needed for self-hosted distribution (GitHub). On WordPress.org installs,
- * GlotPress handles this automatically and the call is a no-op.
- */
-function ayudawp_euw_load_textdomain() {
-	load_plugin_textdomain(
-		'eu-withdrawal-compliance',
-		false,
-		dirname( AYUDAWP_EUW_BASENAME ) . '/languages'
-	);
-}
-add_action( 'init', 'ayudawp_euw_load_textdomain' );
-
-/**
  * Activation hook: schedule cleanup task and create default page.
  */
 function ayudawp_euw_activate() {
 
-	// Register CPT before flushing rewrite rules.
+	// Register the CPT and the WooCommerce My Account "withdrawal" endpoint
+	// BEFORE flushing rewrite rules. Both register on the `init` hook
+	// during normal page loads, but `init` does not run during activation
+	// hooks, so we have to call them explicitly here. Otherwise the flush
+	// would persist a rewrite ruleset without our endpoint, leading to a
+	// 404 on /my-account/withdrawal/.
 	ayudawp_euw_register_cpt();
+	ayudawp_euw_register_wc_endpoint();
 	flush_rewrite_rules();
 
-	// Load textdomain now so the sample template text below is translated
-	// into the site language (the `init` hook fires after activation).
-	ayudawp_euw_load_textdomain();
+	// Track the version we just installed so subsequent updates can detect
+	// schema changes that require another flush_rewrite_rules() pass.
+	update_option( 'ayudawp_euw_version', AYUDAWP_EUW_VERSION );
+
+	// Load translations directly from the bundled MO file so the sample
+	// template text below is created in the site language. WordPress's
+	// just-in-time loader does not run during activation hooks, so we
+	// trigger the load manually here. load_textdomain() is the low-level
+	// counterpart of load_plugin_textdomain() and is not discouraged on
+	// WordPress.org.
+	$ayudawp_euw_mofile = AYUDAWP_EUW_DIR . 'languages/eu-withdrawal-compliance-' . get_locale() . '.mo';
+
+	if ( file_exists( $ayudawp_euw_mofile ) ) {
+		load_textdomain( 'eu-withdrawal-compliance', $ayudawp_euw_mofile );
+	}
 
 	// Trigger the welcome notice on the next admin page load.
 	set_transient( 'ayudawp_euw_just_activated', 1, MINUTE_IN_SECONDS );
@@ -122,6 +125,30 @@ function ayudawp_euw_deactivate() {
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'ayudawp_euw_deactivate' );
+
+/**
+ * Flush rewrite rules once after a plugin upgrade.
+ *
+ * Runs at init priority 100 (after add_rewrite_endpoint registers our
+ * endpoint at default priority 10), so the new ruleset includes
+ * /my-account/withdrawal/. Only triggers when the stored version differs
+ * from the running version, so we never pay the cost on regular requests.
+ *
+ * Without this, users updating from 1.0.0 (where the activation hook
+ * flushed before the endpoint was registered) would keep getting a 404
+ * on the My Account withdrawal endpoint until they manually re-saved
+ * the Permalinks settings page.
+ */
+function ayudawp_euw_maybe_flush_rewrite_rules() {
+
+	if ( get_option( 'ayudawp_euw_version' ) === AYUDAWP_EUW_VERSION ) {
+		return;
+	}
+
+	flush_rewrite_rules();
+	update_option( 'ayudawp_euw_version', AYUDAWP_EUW_VERSION );
+}
+add_action( 'init', 'ayudawp_euw_maybe_flush_rewrite_rules', 100 );
 
 /**
  * Declare WooCommerce HPOS compatibility.
