@@ -48,6 +48,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
           LATEST_TAG=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
 
