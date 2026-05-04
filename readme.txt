@@ -64,6 +64,13 @@ Yes. The plugin ships with a Spanish (Spain) translation included. The form labe
 
 The plugin asks for explicit privacy policy acceptance before submission and stores the visitor IP and user agent only for the purpose of legal traceability of the request. You should add this storage to your privacy policy.
 
+= I installed an early version from GitHub's "Download ZIP" and the folder is "eu-withdrawal-compliance-main". How do I migrate without losing data? =
+
+1. Deactivate the old plugin (the one with the `-main` suffix). Do not delete it yet.
+2. Install this plugin from WordPress.org normally — it will be installed at the correct slug `eu-withdrawal-compliance`.
+3. Activate it. The plugin reuses your existing settings, withdrawal page and request log automatically.
+4. Go back to Plugins and click "Delete" on the old `-main` entry. The uninstall script detects the canonical install and preserves all your data.
+
 == Screenshots ==
 
 1. Public withdrawal form with all required fields.
