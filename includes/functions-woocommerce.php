@@ -239,9 +239,14 @@ add_filter( 'woocommerce_my_account_my_orders_actions', 'ayudawp_euw_add_order_a
  */
 function ayudawp_euw_prefill_from_query( $atts ) {
 
+	// Read-only pre-fill from a link clicked in the user's My Account page.
+	// No data mutation here, hence no nonce; the actual form submission is
+	// nonce-verified in functions-handler.php.
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['order_id'] ) ) {
 		$atts['order_id'] = absint( wp_unslash( $_GET['order_id'] ) );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return $atts;
 }
