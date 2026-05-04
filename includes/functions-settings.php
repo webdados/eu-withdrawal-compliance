@@ -115,6 +115,7 @@ function ayudawp_euw_field_page_callback() {
 
 	$selected = (int) get_option( 'ayudawp_euw_page_id', 0 );
 
+	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Captured with `echo => 0` and emitted through wp_kses() below.
 	$dropdown = wp_dropdown_pages(
 		array(
 			'name'              => 'ayudawp_euw_page_id',
@@ -124,6 +125,7 @@ function ayudawp_euw_field_page_callback() {
 			'echo'              => 0,
 		)
 	);
+	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	echo wp_kses(
 		$dropdown,
