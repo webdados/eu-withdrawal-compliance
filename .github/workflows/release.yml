@@ -1,19 +1,18 @@
 name: Build plugin ZIP on release
 
-# When a Release is published in GitHub, this workflow packages the plugin
-# into a ZIP whose internal root directory is the official plugin slug
-# (eu-withdrawal-compliance/), so users can upload it to WordPress and have
-# it installed at wp-content/plugins/eu-withdrawal-compliance/ — the same
-# slug we will use on WordPress.org. This is what makes future updates
-# transparent for users who installed from GitHub.
-#
-# Without this workflow GitHub's auto-generated zip would expose a folder
-# named "eu-withdrawal-compliance-main", which would land the plugin in a
-# different slug and break automatic updates.
+# Triggers
+# --------
+# 1. release.published — runs automatically when you publish a Release. The
+#    ZIP is attached to that Release as an Asset.
+# 2. workflow_dispatch — runs manually from the Actions tab. Useful while
+#    iterating on a release that has already been published: instead of
+#    deleting and recreating the Release, click "Run workflow" and the ZIP
+#    on the latest Release will be replaced with a fresh build of `main`.
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -33,14 +32,29 @@ jobs:
             -x "*/.git/*" \
             -x "*/.github/*" \
             -x "*/.DS_Store" \
-            -x "*/.DS_Store/*" \
             -x "*.DS_Store" \
             -x "*/node_modules/*" \
             -x "*/tests/*" \
             -x "*/RELEASING.md" \
             -x "*/*.zip"
 
-      - name: Attach ZIP to the GitHub Release
+      - name: Attach ZIP to the just-published Release
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
           files: eu-withdrawal-compliance.zip
+
+      - name: Replace ZIP on the latest existing Release (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_TAG=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No releases found in this repository. Publish one first or skip the manual run."
+            exit 1
+          fi
+
+          echo "Updating Release $LATEST_TAG with a freshly built ZIP."
+          gh release upload "$LATEST_TAG" eu-withdrawal-compliance.zip --clobber
