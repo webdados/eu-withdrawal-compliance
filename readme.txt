@@ -133,12 +133,15 @@ Actions:
 == Changelog ==
 
 = 1.2.0 =
-* New: Article 16 exclusions. Mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Withdrawal requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
-* New: verifiable SHA-256 receipt hash. Every submission now generates a hash sent to the customer in the confirmation email and stored on the request. Acts as tamper-evident proof on a durable medium and can be recomputed later from the stored fields.
+* New: Article 16 exclusions. Mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Subcategories inherit the exclusion from the parent automatically. Withdrawal requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
+* New: instant-search picker for excluded categories in the settings page, with removable chips and instant auto-save.
+* New: inherited exclusion is reflected in the product editor — the per-product checkbox renders ticked and disabled with a note pointing to the category responsible for the inheritance.
+* New: verifiable SHA-256 receipt hash. Every submission generates a hash sent to the customer in the confirmation email and stored on the request. Acts as tamper-evident proof on a durable medium and can be recomputed later from the stored fields.
 * New: configurable withdrawal deadline. Choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days directly from the settings page. The `ayudawp_euw_grace_days` filter still works on top of the stored value.
-* New: submission timestamp (UTC) stored alongside each request and shown in the admin detail screen.
-* New: receipt hash and submission timestamp surfaced in the request detail metabox.
+* New: submission timestamp (UTC) stored alongside each request and surfaced in the request detail metabox.
+* Tweak: polished CPT labels ("Edit withdrawal", "New withdrawal", etc.).
 * Tweak: split `functions-admin.php` into `admin/columns.php`, `admin/metaboxes.php` and `admin/bulk-actions.php` for easier maintenance. No behavioural change.
+* i18n: updated Spanish (es_ES) translation with every new string.
 
 = 1.1.0 =
 * New: customer email notifications on every status change (accepted, rejected, completed).
@@ -154,7 +157,7 @@ Actions:
 == Upgrade Notice ==
 
 = 1.2.0 =
-Adds Article 16 exclusions, verifiable SHA-256 receipt hashes for proof of submission, and configurable deadline settings (basis + grace days) directly from the settings page.
+Adds Article 16 exclusions (with hierarchical category inheritance and an instant-search picker), verifiable SHA-256 receipt hashes for proof of submission, and configurable deadline settings (basis + grace days) directly from the settings page.
 
 = 1.1.0 =
 Adds customer notifications on status changes, bulk actions, a withdrawal column in the orders list and order notes for the full lifecycle.

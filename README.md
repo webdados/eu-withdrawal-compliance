@@ -89,11 +89,15 @@ The German interpretation of the directive (the strictest known so far) requires
 ### Changelog
 
 **1.2.0**
-- Article 16 exclusions: mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Requests on orders containing excluded items are flagged for manual review (never auto-rejected).
-- Verifiable SHA-256 receipt hash sent to the customer on submission as tamper-evident proof on a durable medium. Stored alongside the request and exposed in the detail screen.
-- Configurable withdrawal deadline: choose order date vs. completion date as the basis, and add extra grace days from the settings page.
-- Submission timestamp (UTC) stored on every request.
+- Article 16 exclusions: mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Subcategories inherit the exclusion from the parent automatically. Requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
+- Instant-search picker for excluded categories in settings, with removable chips and instant auto-save (no need to hit "Save changes" for each chip).
+- Inherited exclusion is reflected in the product editor: the per-product checkbox renders ticked and disabled, with a note pointing to the category responsible for the inheritance.
+- Verifiable SHA-256 receipt hash. Every submission emails the customer a tamper-evident code as proof on a durable medium; recomputable from the stored fields.
+- Configurable withdrawal deadline: choose order date vs. completion date as the basis, and add extra grace days from the settings page. The `ayudawp_euw_grace_days` filter still works on top of the stored value.
+- Submission timestamp (UTC) and receipt hash shown on the request detail screen.
+- Polished CPT labels ("Edit withdrawal", "New withdrawal", etc.).
 - Internal: split `functions-admin.php` into `admin/columns.php`, `admin/metaboxes.php` and `admin/bulk-actions.php`. No behavioural change.
+- Updated Spanish (es_ES) translation with every new string.
 
 **1.1.0**
 - Customer email notifications on every status change (accepted, rejected, completed).
@@ -207,11 +211,15 @@ La interpretación alemana de la directiva (la más estricta conocida hasta la f
 ### Registro de cambios
 
 **1.2.0**
-- Exclusiones del Artículo 16: marca productos individuales o categorías enteras de WooCommerce como excluidos del derecho de desistimiento. Las solicitudes sobre pedidos con productos excluidos se marcan para revisión manual (nunca se rechazan automáticamente).
-- Hash SHA-256 de acuse verificable enviado al cliente al recibir la solicitud, como prueba inmutable en soporte duradero. Se almacena junto a la solicitud y aparece en el detalle.
-- Plazo de desistimiento configurable: elige fecha de pedido vs. fecha de completado como base, y suma días de cortesía desde la página de ajustes.
-- Timestamp de envío (UTC) almacenado en cada solicitud.
+- Exclusiones del Artículo 16: marca productos individuales o categorías enteras de WooCommerce como excluidos del derecho de desistimiento. Las subcategorías heredan automáticamente la exclusión de la categoría padre. Las solicitudes sobre pedidos con artículos excluidos se marcan para revisión manual (nunca se rechazan automáticamente), porque un desistimiento parcial sobre el resto del pedido puede seguir siendo válido.
+- Buscador instant de categorías excluidas en los ajustes, con chips eliminables y autoguardado al instante (sin pulsar «Guardar cambios» en cada chip).
+- La exclusión heredada se refleja en el editor de producto: la casilla individual aparece marcada y deshabilitada, con una nota indicando la categoría que la hereda.
+- Hash SHA-256 de acuse verificable. Cada solicitud envía al cliente un código como prueba inmutable en soporte duradero, recalculable desde los campos guardados.
+- Plazo de desistimiento configurable: elige fecha del pedido vs. fecha de completado como base y suma días de cortesía desde la página de ajustes. El filtro `ayudawp_euw_grace_days` sigue funcionando encima del valor guardado.
+- Timestamp de envío (UTC) y hash del acuse visibles en el detalle de cada solicitud.
+- Etiquetas del CPT pulidas («Editar desistimiento», «Nuevo desistimiento», etc.).
 - Interno: `functions-admin.php` se ha dividido en `admin/columns.php`, `admin/metaboxes.php` y `admin/bulk-actions.php`. Sin cambios de comportamiento.
+- Traducción al español (es_ES) actualizada con todas las cadenas nuevas.
 
 **1.1.0**
 - Emails al cliente en cada cambio de estado (aceptada, rechazada, completada).
