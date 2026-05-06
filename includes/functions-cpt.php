@@ -18,15 +18,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ayudawp_euw_register_cpt() {
 
 	$labels = array(
-		'name'               => _x( 'Withdrawals', 'post type general name', 'eu-withdrawal-compliance' ),
-		'singular_name'      => _x( 'Withdrawal', 'post type singular name', 'eu-withdrawal-compliance' ),
-		'menu_name'          => _x( 'Withdrawals', 'admin menu', 'eu-withdrawal-compliance' ),
-		'name_admin_bar'     => _x( 'Withdrawal', 'add new on admin bar', 'eu-withdrawal-compliance' ),
-		'all_items'          => __( 'Withdrawals', 'eu-withdrawal-compliance' ),
-		'view_item'          => __( 'View withdrawal', 'eu-withdrawal-compliance' ),
-		'search_items'       => __( 'Search withdrawals', 'eu-withdrawal-compliance' ),
-		'not_found'          => __( 'No withdrawals found.', 'eu-withdrawal-compliance' ),
-		'not_found_in_trash' => __( 'No withdrawals in Trash.', 'eu-withdrawal-compliance' ),
+		'name'                  => _x( 'Withdrawals', 'post type general name', 'eu-withdrawal-compliance' ),
+		'singular_name'         => _x( 'Withdrawal', 'post type singular name', 'eu-withdrawal-compliance' ),
+		'menu_name'             => _x( 'Withdrawals', 'admin menu', 'eu-withdrawal-compliance' ),
+		'name_admin_bar'        => _x( 'Withdrawal', 'add new on admin bar', 'eu-withdrawal-compliance' ),
+		'all_items'             => __( 'Withdrawals', 'eu-withdrawal-compliance' ),
+		'edit_item'             => __( 'Edit withdrawal', 'eu-withdrawal-compliance' ),
+		'new_item'              => __( 'New withdrawal', 'eu-withdrawal-compliance' ),
+		'view_item'             => __( 'View withdrawal', 'eu-withdrawal-compliance' ),
+		'view_items'            => __( 'View withdrawals', 'eu-withdrawal-compliance' ),
+		'search_items'          => __( 'Search withdrawals', 'eu-withdrawal-compliance' ),
+		'not_found'             => __( 'No withdrawals found.', 'eu-withdrawal-compliance' ),
+		'not_found_in_trash'    => __( 'No withdrawals in Trash.', 'eu-withdrawal-compliance' ),
+		'filter_items_list'     => __( 'Filter withdrawals list', 'eu-withdrawal-compliance' ),
+		'items_list_navigation' => __( 'Withdrawals list navigation', 'eu-withdrawal-compliance' ),
+		'items_list'            => __( 'Withdrawals list', 'eu-withdrawal-compliance' ),
 	);
 
 	// When WooCommerce is active, nest the CPT under the WooCommerce menu so

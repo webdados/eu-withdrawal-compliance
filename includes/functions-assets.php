@@ -108,8 +108,30 @@ function ayudawp_euw_enqueue_admin( $hook ) {
 	);
 
 	// Thickbox is only needed on the settings page where the promo banner lives.
+	// The instant-search picker for excluded categories also lives there.
 	if ( $is_settings_screen ) {
+
 		add_thickbox();
+
+		wp_enqueue_script(
+			'ayudawp-euw-admin-exclusions',
+			AYUDAWP_EUW_URL . 'assets/js/admin-exclusions.js',
+			array( 'jquery' ),
+			AYUDAWP_EUW_VERSION,
+			true
+		);
+
+		wp_localize_script(
+			'ayudawp-euw-admin-exclusions',
+			'ayudawpEuwExclusions',
+			array(
+				'i18n' => array(
+					'noResults'   => __( 'No matching categories.', 'eu-withdrawal-compliance' ),
+					/* translators: %s is replaced with the category name in JavaScript. */
+					'removeLabel' => __( 'Remove %s from exclusions', 'eu-withdrawal-compliance' ),
+				),
+			)
+		);
 	}
 }
 add_action( 'admin_enqueue_scripts', 'ayudawp_euw_enqueue_admin' );

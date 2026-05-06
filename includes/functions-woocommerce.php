@@ -58,26 +58,16 @@ function ayudawp_euw_validate_wc_order( $order_ref, $email ) {
 		);
 	}
 
-	// Check the 14-day window from order date.
-	$date_created = $order->get_date_created();
+	// Check the 14-day window. Basis (order date vs completion date) and grace
+	// days are configurable from the settings page.
+	$deadline = ayudawp_euw_get_order_deadline_timestamp( $order );
 
-	if ( $date_created ) {
-		$created_ts = $date_created->getTimestamp();
-		$deadline   = $created_ts + ( 14 * DAY_IN_SECONDS );
-
-		// Allow a 7-day grace period for cases where the customer has not been
-		// properly informed about their withdrawal right (worst-case extends to 12 months).
-		// This is configurable via filter.
-		$grace_days = (int) apply_filters( 'ayudawp_euw_grace_days', 0 );
-		$deadline  += $grace_days * DAY_IN_SECONDS;
-
-		if ( time() > $deadline && ! apply_filters( 'ayudawp_euw_skip_deadline_check', false, $order ) ) {
-			return array(
-				'valid'    => false,
-				'error'    => 'expired',
-				'order_id' => 0,
-			);
-		}
+	if ( $deadline && time() > $deadline && ! apply_filters( 'ayudawp_euw_skip_deadline_check', false, $order ) ) {
+		return array(
+			'valid'    => false,
+			'error'    => 'expired',
+			'order_id' => 0,
+		);
 	}
 
 	return array(
@@ -85,6 +75,45 @@ function ayudawp_euw_validate_wc_order( $order_ref, $email ) {
 		'error'    => '',
 		'order_id' => $order->get_id(),
 	);
+}
+
+/**
+ * Compute the timestamp at which the withdrawal window for a WC order closes.
+ *
+ * Reads the deadline basis (order date vs completion date) and the grace days
+ * from the plugin settings, then applies the `ayudawp_euw_grace_days` filter
+ * for backward compatibility with installs that customised the window before
+ * the UI was added.
+ *
+ * @param object $order WC_Order instance.
+ * @return int Unix timestamp, or 0 if no usable date is available.
+ */
+function ayudawp_euw_get_order_deadline_timestamp( $order ) {
+
+	$basis     = get_option( 'ayudawp_euw_deadline_basis', 'order_date' );
+	$base_date = null;
+
+	if ( 'completion_date' === $basis && method_exists( $order, 'get_date_completed' ) ) {
+		$base_date = $order->get_date_completed();
+	}
+
+	if ( ! $base_date && method_exists( $order, 'get_date_created' ) ) {
+		$base_date = $order->get_date_created();
+	}
+
+	if ( ! $base_date ) {
+		return 0;
+	}
+
+	$deadline = $base_date->getTimestamp() + ( 14 * DAY_IN_SECONDS );
+
+	$option_grace = (int) get_option( 'ayudawp_euw_grace_days', 0 );
+
+	/** This filter is documented in includes/functions-woocommerce.php */
+	$grace_days = (int) apply_filters( 'ayudawp_euw_grace_days', $option_grace );
+	$deadline  += $grace_days * DAY_IN_SECONDS;
+
+	return $deadline;
 }
 
 /**
@@ -252,17 +281,10 @@ function ayudawp_euw_add_order_action( $actions, $order ) {
 		return $actions;
 	}
 
-	// Only show within 14 days from creation.
-	$date_created = $order->get_date_created();
+	// Only show while the configured withdrawal window is open.
+	$deadline = ayudawp_euw_get_order_deadline_timestamp( $order );
 
-	if ( ! $date_created ) {
-		return $actions;
-	}
-
-	$created_ts = $date_created->getTimestamp();
-	$deadline   = $created_ts + ( 14 * DAY_IN_SECONDS );
-
-	if ( time() > $deadline ) {
+	if ( ! $deadline || time() > $deadline ) {
 		return $actions;
 	}
 

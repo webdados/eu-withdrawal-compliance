@@ -3,7 +3,7 @@
  * Plugin Name:       EU Withdrawal Compliance
  * Plugin URI:        https://servicios.ayudawp.com
  * Description:       Adds the EU online withdrawal function required by Directive (EU) 2023/2673 from June 19, 2026. Includes a shortcode, a Gutenberg-friendly form, a WooCommerce "My account" endpoint and a full admin log.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.0
  * Tested up to:      7.0
  * Requires PHP:      7.4
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants.
-define( 'AYUDAWP_EUW_VERSION', '1.1.0' );
+define( 'AYUDAWP_EUW_VERSION', '1.2.0' );
 define( 'AYUDAWP_EUW_FILE', __FILE__ );
 define( 'AYUDAWP_EUW_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AYUDAWP_EUW_URL', plugin_dir_url( __FILE__ ) );
@@ -42,6 +42,7 @@ require_once AYUDAWP_EUW_DIR . 'includes/functions-assets.php';
 require_once AYUDAWP_EUW_DIR . 'includes/functions-settings.php';
 require_once AYUDAWP_EUW_DIR . 'includes/functions-woocommerce.php';
 require_once AYUDAWP_EUW_DIR . 'includes/functions-emails-wc.php';
+require_once AYUDAWP_EUW_DIR . 'includes/functions-exclusions.php';
 require_once AYUDAWP_EUW_DIR . 'includes/class-aeuw-promo-banner.php';
 
 /**

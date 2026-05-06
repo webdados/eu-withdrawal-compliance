@@ -91,14 +91,33 @@ function ayudawp_euw_handle_submission() {
 	update_post_meta( $post_id, '_ayudawp_euw_user_agent', isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '' );
 	update_post_meta( $post_id, '_ayudawp_euw_status', 'pending' );
 
+	// Generate a verifiable SHA-256 receipt hash so the customer keeps a
+	// proof of submission on a durable medium (email) that can be recomputed
+	// later from the same fields to confirm the request was not altered.
+	$submitted_at = current_time( 'mysql', true );
+	update_post_meta( $post_id, '_ayudawp_euw_submitted_at', $submitted_at );
+
+	$receipt_hash = ayudawp_euw_compute_receipt_hash( $post_id, $name, $email, $order, $scope, $date, $submitted_at );
+	update_post_meta( $post_id, '_ayudawp_euw_receipt_hash', $receipt_hash );
+
+	$excluded_items = array();
+
 	if ( $wc_validation['order_id'] ) {
 		update_post_meta( $post_id, '_ayudawp_euw_wc_order_id', $wc_validation['order_id'] );
 		ayudawp_euw_add_wc_order_note( $wc_validation['order_id'], $post_id, $scope, $details );
+
+		// Flag any items in the order that fall under Article 16 exceptions
+		// so the admin reviews the request manually. Never auto-rejected.
+		$excluded_items = ayudawp_euw_get_excluded_items_in_order( $wc_validation['order_id'] );
+
+		if ( ! empty( $excluded_items ) ) {
+			update_post_meta( $post_id, '_ayudawp_euw_excluded_items', $excluded_items );
+		}
 	}
 
 	// 8. Send notifications.
-	ayudawp_euw_send_customer_email( $email, $name, $order, $scope );
-	ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, $details );
+	ayudawp_euw_send_customer_email( $email, $name, $order, $scope, $receipt_hash );
+	ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, $details, $excluded_items );
 
 	/**
 	 * Fires after a withdrawal request has been processed.
@@ -181,4 +200,38 @@ function ayudawp_euw_redirect_with_success() {
 
 	wp_safe_redirect( $url );
 	exit;
+}
+
+/**
+ * Compute the SHA-256 receipt hash for a withdrawal request.
+ *
+ * The same input always produces the same output, so this can be re-run from
+ * the stored meta fields to verify that the original submission was not
+ * tampered with.
+ *
+ * @param int    $post_id      Withdrawal CPT ID.
+ * @param string $name         Customer name.
+ * @param string $email        Customer email.
+ * @param string $order        Order reference.
+ * @param string $scope        Withdrawal scope (full|partial).
+ * @param string $date         Order date as submitted by the customer.
+ * @param string $submitted_at GMT timestamp (Y-m-d H:i:s) the request was registered.
+ * @return string Lowercase 64-char SHA-256 hex digest.
+ */
+function ayudawp_euw_compute_receipt_hash( $post_id, $name, $email, $order, $scope, $date, $submitted_at ) {
+
+	$payload = implode(
+		'|',
+		array(
+			(string) absint( $post_id ),
+			$name,
+			$email,
+			$order,
+			$scope,
+			$date,
+			$submitted_at,
+		)
+	);
+
+	return hash( 'sha256', $payload );
 }

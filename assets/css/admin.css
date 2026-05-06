@@ -160,3 +160,159 @@ a.ayudawp-euw-status:hover {
 		grid-template-columns: 1fr;
 	}
 }
+
+/* ==========================================================================
+   Excluded categories picker (settings page)
+   ========================================================================== */
+
+.ayudawp-euw-cat-picker {
+	max-width: 540px;
+}
+
+.ayudawp-euw-cat-picker__search {
+	position: relative;
+}
+
+.ayudawp-euw-cat-picker__input {
+	width: 100%;
+	max-width: 540px;
+}
+
+.ayudawp-euw-cat-picker__results {
+	position: absolute;
+	top: calc(100% + 2px);
+	left: 0;
+	right: 0;
+	max-height: 260px;
+	overflow-y: auto;
+	margin: 0;
+	padding: 4px 0;
+	background: #fff;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+	list-style: none;
+	z-index: 50;
+}
+
+.ayudawp-euw-cat-picker__option,
+.ayudawp-euw-cat-picker__empty {
+	padding: 8px 12px;
+	margin: 0;
+	cursor: pointer;
+	color: #1d2327;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.ayudawp-euw-cat-picker__empty {
+	color: #50575e;
+	cursor: default;
+	font-style: italic;
+}
+
+.ayudawp-euw-cat-picker__option:hover,
+.ayudawp-euw-cat-picker__option.is-active {
+	background: #f0f6fc;
+	color: #2271b1;
+}
+
+.ayudawp-euw-cat-picker__bc {
+	color: #50575e;
+	font-weight: normal;
+}
+
+.ayudawp-euw-cat-picker__count {
+	color: #8c8f94;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.ayudawp-euw-cat-picker__chips {
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.ayudawp-euw-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: #f0f0f1;
+	border: 1px solid #c3c4c7;
+	border-radius: 999px;
+	padding: 4px 6px 4px 12px;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #1d2327;
+	transition: opacity 0.15s ease;
+}
+
+.ayudawp-euw-chip.is-removing {
+	opacity: 0.5;
+}
+
+.ayudawp-euw-chip__label strong {
+	font-weight: 600;
+}
+
+.ayudawp-euw-chip__breadcrumb {
+	color: #50575e;
+	font-weight: normal;
+	margin-left: 4px;
+}
+
+.ayudawp-euw-chip__remove {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: #646970;
+	font-size: 16px;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0;
+}
+
+.ayudawp-euw-chip__remove:hover,
+.ayudawp-euw-chip__remove:focus {
+	background: #d63638;
+	color: #fff;
+	outline: none;
+}
+
+/* ==========================================================================
+   Article 16 excluded items list inside the request detail metabox
+   ========================================================================== */
+
+.ayudawp-euw-excluded-items {
+	margin: 0 0 8px;
+	padding-left: 1.25em;
+	color: #1d2327;
+}
+
+.ayudawp-euw-excluded-items li {
+	margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   Per-product inherited exclusion notice (product editor)
+   ========================================================================== */
+
+.form-field._ayudawp_euw_excluded_field input[type="checkbox"][disabled] {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.form-field._ayudawp_euw_excluded_field .description {
+	display: block;
+	margin-top: 4px;
+	color: #50575e;
+}

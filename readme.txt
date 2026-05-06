@@ -4,7 +4,7 @@ Tags: woocommerce, eu, gdpr, withdrawal, ecommerce
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,12 +18,15 @@ This plugin gives you a clean, ready-to-deploy implementation:
 
 * A public withdrawal page automatically created on activation, pre-filled with a neutral, multilingual sample template (with a clear "review with a legal advisor" disclaimer) and the form embedded via shortcode.
 * A `[ayudawp_withdrawal_form]` shortcode you can use anywhere in your site.
-* A "Right of withdrawal" endpoint inside the WooCommerce **My Account** area, with a per-order "Withdraw" button shown only while the 14-day window is open.
+* A "Right of withdrawal" endpoint inside the WooCommerce **My Account** area, with a per-order "Withdraw" button shown only while the configured withdrawal window is open.
 * Automatic injection of an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, on-hold and completed orders), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function.
 * Automatic verification of the order/email pair when WooCommerce is active, including the 14-day deadline check.
+* **Configurable deadline calculation**: choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days from the settings page.
+* **Article 16 exclusions**: mark individual products or whole categories as excluded from the right of withdrawal (custom-made, perishable, sealed digital, etc.). Requests on orders containing excluded items are flagged for the admin to review manually — never auto-rejected, since a partial withdrawal over the rest of the order can still be valid.
+* **Verifiable receipt hash**: every submission generates a SHA-256 hash sent to the customer in the confirmation email so they keep a tamper-evident proof on a durable medium.
 * Private order notes added to the WooCommerce order at every step of the lifecycle: when the request is received and again when it is accepted, rejected or marked as completed (including the admin's comment if any).
 * Confirmation email to the customer on submission and a follow-up email when the request is accepted, rejected or completed. Optional admin comment is forwarded to the customer (required for rejections, optional for completed). Notification email to the shop admin (with reply-to set to the customer for fast handling, sanitized against header injection).
-* Full request log as a private custom post type, with status tracking (pending, accepted, rejected, completed), customer details, IP address and user agent for legal traceability.
+* Full request log as a private custom post type, with status tracking (pending, accepted, rejected, completed), customer details, IP address, user agent and submission timestamp for legal traceability.
 * Bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
 * "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
 * Native integration in the WooCommerce admin menu: settings live at **WooCommerce → EU Withdrawal**, request log at **WooCommerce → Withdrawals**.
@@ -31,6 +34,19 @@ This plugin gives you a clean, ready-to-deploy implementation:
 * Conditional asset loading: CSS only loads on the withdrawal page and inside the plugin admin screens.
 * Translation-ready, fully escaped, follows WordPress Coding Standards, HPOS-compatible.
 * Ships with Spanish (Spain) translation included.
+
+== Privacy ==
+
+This plugin stores the following personal data for each withdrawal request, exclusively to fulfil the legal traceability of consumer rights and to allow the shop to handle the request:
+
+* Customer name and email address (required to contact the consumer about the request).
+* Order reference and order date (required to validate the request against the purchase).
+* IP address and User-Agent string (required to evidence when and how the request was submitted, in line with the directive's "durable medium" requirement).
+* Submission timestamp (UTC) and SHA-256 receipt hash (required to recompute and verify the integrity of the original submission if disputed).
+
+Data is stored as a private custom post type entry (`ayudawp_withdrawal`) accessible only to administrators. The plugin does not transmit any data to third-party services; all communication happens between the shop and the customer via standard WordPress emails.
+
+You should add a section to your site's privacy policy describing this storage. The plugin does not currently expose its data to the WordPress Personal Data Export / Erase tools — that integration is planned for a later release.
 
 == Installation ==
 
@@ -44,7 +60,20 @@ This plugin gives you a clean, ready-to-deploy implementation:
 
 = Will the form check the 14-day deadline? =
 
-Yes, when WooCommerce is active. If the order is older than 14 days the plugin rejects the request with a clear message. You can disable that check or extend the grace period with the `ayudawp_euw_grace_days` and `ayudawp_euw_skip_deadline_check` filters.
+Yes, when WooCommerce is active. If the order is older than the configured window the plugin rejects the request with a clear message. From version 1.2.0 you can configure the calculation basis (order date vs. completion date) and add extra grace days directly from **WooCommerce → EU Withdrawal**. The legacy `ayudawp_euw_grace_days` and `ayudawp_euw_skip_deadline_check` filters still work for programmatic overrides.
+
+= How do I mark products that are excluded from the right of withdrawal (Article 16)? =
+
+You have two options, which can be combined:
+
+1. **By category**: from **WooCommerce → EU Withdrawal → Article 16 exclusions** pick the WooCommerce categories whose products fall under one of the Article 16 exceptions (custom-made, perishable, sealed digital content opened by the consumer, hygiene-sealed items, etc.).
+2. **By product**: when editing a product, tick the **Excluded from right of withdrawal** checkbox under the General tab.
+
+When a withdrawal request lands on an order containing excluded items, the plugin flags it in the admin notification email and on the request detail screen. The request is **never auto-rejected**, because a partial withdrawal over the non-excluded items in the same order can still be valid. The admin reviews and decides.
+
+= What is the receipt verification code in the customer email? =
+
+It is a SHA-256 hash computed from the request data (post ID, customer name, email, order reference, scope, order date and submission timestamp). The customer keeps the email as a tamper-evident proof on a durable medium. If a dispute later arises, you can recompute the hash from the stored fields with the `ayudawp_euw_compute_receipt_hash()` helper and confirm the original submission was not altered.
 
 = Where are withdrawal requests stored? =
 
@@ -60,11 +89,32 @@ No. By default the notice is only added to the customer-facing emails sent durin
 
 = Is the plugin available in Spanish? =
 
-Yes. The plugin ships with a Spanish (Spain) translation included. The form labels, admin screens and customer emails will appear in Spanish on sites with `WPLANG` or site language set to `es_ES`.
+Yes. The plugin ships with a Spanish (Spain) translation included. The form labels, admin screens and customer emails will appear in Spanish on sites with `WPLANG` or site language set to `es_ES`. Other locales can be contributed via the WordPress.org translation platform once the plugin is published there.
 
 = Does the plugin pass GDPR requirements? =
 
-The plugin asks for explicit privacy policy acceptance before submission and stores the visitor IP and user agent only for the purpose of legal traceability of the request. You should add this storage to your privacy policy.
+The plugin asks for explicit privacy policy acceptance before submission and stores the visitor IP and user agent only for the purpose of legal traceability of the request. See the **Privacy** section above for the full list of stored fields. Add this storage to your site's privacy policy.
+
+= What happens if the customer deletes their WordPress user account? =
+
+The withdrawal log is independent of the WordPress user table — it lives as a private custom post type indexed by the customer email. Deleting the user account does not delete the log; you must delete the corresponding `ayudawp_withdrawal` entries manually if your retention policy requires it. A native integration with the WordPress Personal Data Export / Erase tools is planned for a later release.
+
+= Can I customise the email subjects and bodies? =
+
+Currently the emails are sent in plain text and their copy is translatable through the standard WordPress text-domain. HTML email templates that respect the WooCommerce email theme are planned for a later release. For now, advanced customisation requires hooking into the wp_mail filters.
+
+= Which hooks does the plugin expose for developers? =
+
+Filters:
+
+* `ayudawp_euw_grace_days` — extra days added to the 14-day deadline. The default is the value stored in settings; the filter receives that value, so returning `$days + N` adds on top of it.
+* `ayudawp_euw_skip_deadline_check` — return `true` to disable the deadline check entirely. Receives the WC_Order as second argument.
+* `ayudawp_euw_email_ids` — array of WooCommerce email IDs where the withdrawal notice is injected.
+
+Actions:
+
+* `ayudawp_euw_after_submission` — fires after a withdrawal request has been processed. Arguments: CPT ID, submission data array.
+* `ayudawp_euw_after_status_change` — fires after a status change (individual or bulk). Arguments: CPT ID, new status, optional admin comment.
 
 = I installed an early version from GitHub's "Download ZIP" and the folder is "eu-withdrawal-compliance-main". How do I migrate without losing data? =
 
@@ -82,6 +132,14 @@ The plugin asks for explicit privacy policy acceptance before submission and sto
 
 == Changelog ==
 
+= 1.2.0 =
+* New: Article 16 exclusions. Mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Withdrawal requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
+* New: verifiable SHA-256 receipt hash. Every submission now generates a hash sent to the customer in the confirmation email and stored on the request. Acts as tamper-evident proof on a durable medium and can be recomputed later from the stored fields.
+* New: configurable withdrawal deadline. Choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days directly from the settings page. The `ayudawp_euw_grace_days` filter still works on top of the stored value.
+* New: submission timestamp (UTC) stored alongside each request and shown in the admin detail screen.
+* New: receipt hash and submission timestamp surfaced in the request detail metabox.
+* Tweak: split `functions-admin.php` into `admin/columns.php`, `admin/metaboxes.php` and `admin/bulk-actions.php` for easier maintenance. No behavioural change.
+
 = 1.1.0 =
 * New: customer email notifications on every status change (accepted, rejected, completed).
 * New: optional admin comment forwarded to the customer on status change. Required for rejections, optional for completed requests.
@@ -94,6 +152,9 @@ The plugin asks for explicit privacy policy acceptance before submission and sto
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds Article 16 exclusions, verifiable SHA-256 receipt hashes for proof of submission, and configurable deadline settings (basis + grace days) directly from the settings page.
 
 = 1.1.0 =
 Adds customer notifications on status changes, bulk actions, a withdrawal column in the orders list and order notes for the full lifecycle.

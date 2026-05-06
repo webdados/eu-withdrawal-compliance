@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later license.
 msgid ""
 msgstr ""
-"Project-Id-Version: EU Withdrawal Compliance 1.1.0\n"
+"Project-Id-Version: EU Withdrawal Compliance 1.2.0\n"
 "Report-Msgid-Bugs-To: https://servicios.ayudawp.com\n"
 "POT-Creation-Date: 2026-05-06 12:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -1008,4 +1008,192 @@ msgstr ""
 #: includes/functions-handler.php:71
 #, php-format
 msgid "Order %1$s — %2$s"
+msgstr ""
+
+#: includes/admin/metaboxes.php:54
+msgid "Submitted at (UTC)"
+msgstr ""
+
+#: includes/admin/metaboxes.php:55
+msgid "Receipt hash (SHA-256)"
+msgstr ""
+
+#: includes/admin/metaboxes.php:79
+msgid "Article 16 exclusions detected in this order"
+msgstr ""
+
+#: includes/admin/metaboxes.php:91
+msgid ""
+"These items were flagged as excluded from the right of withdrawal at the "
+"time the request was submitted. Review manually before accepting or "
+"rejecting; a partial withdrawal over the rest of the order may still be "
+"valid."
+msgstr ""
+
+#: includes/functions-emails.php
+msgid ""
+"Receipt verification code (keep this email as proof of submission):"
+msgstr ""
+
+#: includes/functions-emails.php
+msgid ""
+"⚠ The order contains items flagged as excluded from the right of withdrawal "
+"(Article 16):"
+msgstr ""
+
+#: includes/functions-emails.php
+msgid ""
+"Review manually before accepting or rejecting. A partial withdrawal over "
+"non-excluded items may still be valid."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Withdrawal deadline"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Calculate deadline from"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Grace days"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"EU Directive 2011/83 sets a 14-day withdrawal period. Some member states "
+"extend this baseline; use these settings to adjust the calculation if your "
+"jurisdiction or contract terms require it."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Order date (when the customer placed the order)"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"Completion date (when the WooCommerce order was marked as completed)"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"If you choose Completion date but the order is not yet completed, the "
+"plugin falls back to the order date."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "days"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"Extra days added on top of the 14-day legal minimum. Useful when you offer "
+"a longer return window than required."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Article 16 exclusions"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"Article 16 of EU Directive 2011/83 lists categories of goods exempted from "
+"the right of withdrawal: custom-made products, perishable goods, sealed "
+"digital content opened by the consumer, hygiene-sealed items, etc. Pick the "
+"WooCommerce categories that fit those exceptions, or mark individual "
+"products in the product editor under \"Excluded from right of withdrawal\". "
+"Withdrawal requests on orders containing excluded items are flagged for "
+"manual review — never auto-rejected, since a partial withdrawal over the "
+"rest of the order can still be valid."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Excluded product categories"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"WooCommerce is not active, so there are no product categories to choose "
+"from."
+msgstr ""
+
+#: includes/functions-settings.php
+msgid "Search categories to exclude…"
+msgstr ""
+
+#: includes/functions-settings.php
+msgid ""
+"Type to search a product category and click it to add. Subcategories "
+"inherit the exclusion automatically. Changes are saved instantly."
+msgstr ""
+
+#. translators: %s: category name.
+#: includes/functions-exclusions.php
+#: includes/functions-settings.php
+#, php-format
+msgid "Remove %s from exclusions"
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid "Excluded from right of withdrawal"
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid ""
+"Tick this box if the product falls under one of the Article 16 exceptions "
+"of EU Directive 2011/83 (custom-made, perishable, sealed digital content "
+"opened by the consumer, etc.)."
+msgstr ""
+
+#. translators: %s: parent category name.
+#: includes/functions-exclusions.php
+#, php-format
+msgid ""
+"Inherited from the “%s” category, marked as excluded in EU Withdrawal "
+"settings. Remove the category from the exclusion list (or change the "
+"product's categories) to lift the exclusion."
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid "Insufficient permissions."
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid "Invalid request."
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid "WooCommerce is not active."
+msgstr ""
+
+#: includes/functions-exclusions.php
+msgid "Category not found."
+msgstr ""
+
+#: includes/functions-assets.php
+msgid "No matching categories."
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "Edit withdrawal"
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "New withdrawal"
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "View withdrawals"
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "Filter withdrawals list"
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "Withdrawals list navigation"
+msgstr ""
+
+#: includes/functions-cpt.php
+msgid "Withdrawals list"
 msgstr ""

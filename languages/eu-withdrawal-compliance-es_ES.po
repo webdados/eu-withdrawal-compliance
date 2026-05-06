@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later license.
 msgid ""
 msgstr ""
-"Project-Id-Version: EU Withdrawal Compliance 1.1.0\n"
+"Project-Id-Version: EU Withdrawal Compliance 1.2.0\n"
 "Report-Msgid-Bugs-To: https://servicios.ayudawp.com\n"
 "POT-Creation-Date: 2026-05-06 12:33+0200\n"
 "PO-Revision-Date: 2026-05-06 12:00+0200\n"
@@ -1078,6 +1078,236 @@ msgstr "Información adicional de nuestro equipo:"
 #, php-format
 msgid "Order %1$s — %2$s"
 msgstr "Pedido %1$s — %2$s"
+
+# --- v1.2.0 strings ---
+
+#: includes/admin/metaboxes.php:54
+msgid "Submitted at (UTC)"
+msgstr "Enviada el (UTC)"
+
+#: includes/admin/metaboxes.php:55
+msgid "Receipt hash (SHA-256)"
+msgstr "Hash del acuse (SHA-256)"
+
+#: includes/admin/metaboxes.php:79
+msgid "Article 16 exclusions detected in this order"
+msgstr "Exclusiones del artículo 16 detectadas en este pedido"
+
+#: includes/admin/metaboxes.php:91
+msgid ""
+"These items were flagged as excluded from the right of withdrawal at the "
+"time the request was submitted. Review manually before accepting or "
+"rejecting; a partial withdrawal over the rest of the order may still be "
+"valid."
+msgstr ""
+"Estos artículos se marcaron como excluidos del derecho de desistimiento en "
+"el momento de enviar la solicitud. Revísalos manualmente antes de aceptar o "
+"rechazar; un desistimiento parcial sobre el resto del pedido puede seguir "
+"siendo válido."
+
+#: includes/functions-emails.php
+msgid ""
+"Receipt verification code (keep this email as proof of submission):"
+msgstr ""
+"Código de verificación del acuse (conserva este correo como prueba de "
+"envío):"
+
+#: includes/functions-emails.php
+msgid ""
+"⚠ The order contains items flagged as excluded from the right of withdrawal "
+"(Article 16):"
+msgstr ""
+"⚠ El pedido contiene artículos marcados como excluidos del derecho de "
+"desistimiento (artículo 16):"
+
+#: includes/functions-emails.php
+msgid ""
+"Review manually before accepting or rejecting. A partial withdrawal over "
+"non-excluded items may still be valid."
+msgstr ""
+"Revísalo manualmente antes de aceptar o rechazar. Un desistimiento parcial "
+"sobre los artículos no excluidos puede seguir siendo válido."
+
+#: includes/functions-settings.php
+msgid "Withdrawal deadline"
+msgstr "Plazo de desistimiento"
+
+#: includes/functions-settings.php
+msgid "Calculate deadline from"
+msgstr "Calcular el plazo desde"
+
+#: includes/functions-settings.php
+msgid "Grace days"
+msgstr "Días de cortesía"
+
+#: includes/functions-settings.php
+msgid ""
+"EU Directive 2011/83 sets a 14-day withdrawal period. Some member states "
+"extend this baseline; use these settings to adjust the calculation if your "
+"jurisdiction or contract terms require it."
+msgstr ""
+"La Directiva (UE) 2011/83 establece un plazo de desistimiento de 14 días. "
+"Algunos Estados miembros amplían ese mínimo; usa estos ajustes para adaptar "
+"el cálculo si tu jurisdicción o tus condiciones contractuales lo requieren."
+
+#: includes/functions-settings.php
+msgid "Order date (when the customer placed the order)"
+msgstr "Fecha del pedido (cuando el cliente hizo el pedido)"
+
+#: includes/functions-settings.php
+msgid ""
+"Completion date (when the WooCommerce order was marked as completed)"
+msgstr ""
+"Fecha de completado (cuando se marcó el pedido como completado en "
+"WooCommerce)"
+
+#: includes/functions-settings.php
+msgid ""
+"If you choose Completion date but the order is not yet completed, the "
+"plugin falls back to the order date."
+msgstr ""
+"Si eliges Fecha de completado pero el pedido aún no está completado, el "
+"plugin recurre a la fecha del pedido."
+
+#: includes/functions-settings.php
+msgid "days"
+msgstr "días"
+
+#: includes/functions-settings.php
+msgid ""
+"Extra days added on top of the 14-day legal minimum. Useful when you offer "
+"a longer return window than required."
+msgstr ""
+"Días adicionales que se suman al mínimo legal de 14. Útil si ofreces un "
+"periodo de devolución más amplio del que exige la ley."
+
+#: includes/functions-settings.php
+msgid "Article 16 exclusions"
+msgstr "Exclusiones del artículo 16"
+
+#: includes/functions-settings.php
+msgid ""
+"Article 16 of EU Directive 2011/83 lists categories of goods exempted from "
+"the right of withdrawal: custom-made products, perishable goods, sealed "
+"digital content opened by the consumer, hygiene-sealed items, etc. Pick the "
+"WooCommerce categories that fit those exceptions, or mark individual "
+"products in the product editor under \"Excluded from right of withdrawal\". "
+"Withdrawal requests on orders containing excluded items are flagged for "
+"manual review — never auto-rejected, since a partial withdrawal over the "
+"rest of the order can still be valid."
+msgstr ""
+"El artículo 16 de la Directiva (UE) 2011/83 enumera las categorías de "
+"bienes exentas del derecho de desistimiento: productos personalizados, "
+"perecederos, contenidos digitales precintados abiertos por el consumidor, "
+"productos precintados por motivos de higiene, etc. Selecciona las "
+"categorías de WooCommerce que encajen con esas excepciones, o marca "
+"productos concretos en el editor de producto bajo «Excluido del derecho de "
+"desistimiento». Las solicitudes de desistimiento sobre pedidos con "
+"artículos excluidos quedan marcadas para revisión manual — nunca se "
+"rechazan de manera automática, ya que un desistimiento parcial sobre el "
+"resto del pedido puede seguir siendo válido."
+
+#: includes/functions-settings.php
+msgid "Excluded product categories"
+msgstr "Categorías de producto excluidas"
+
+#: includes/functions-settings.php
+msgid ""
+"WooCommerce is not active, so there are no product categories to choose "
+"from."
+msgstr ""
+"WooCommerce no está activo, así que no hay categorías de producto que "
+"elegir."
+
+#: includes/functions-settings.php
+msgid "Search categories to exclude…"
+msgstr "Buscar categorías a excluir…"
+
+#: includes/functions-settings.php
+msgid ""
+"Type to search a product category and click it to add. Subcategories "
+"inherit the exclusion automatically. Changes are saved instantly."
+msgstr ""
+"Escribe para buscar una categoría de producto y haz clic en ella para "
+"añadirla. Las subcategorías heredan la exclusión automáticamente. Los "
+"cambios se guardan al instante."
+
+#. translators: %s: category name.
+#: includes/functions-exclusions.php
+#: includes/functions-settings.php
+#, php-format
+msgid "Remove %s from exclusions"
+msgstr "Quitar %s de las exclusiones"
+
+#: includes/functions-exclusions.php
+msgid "Excluded from right of withdrawal"
+msgstr "Excluido del derecho de desistimiento"
+
+#: includes/functions-exclusions.php
+msgid ""
+"Tick this box if the product falls under one of the Article 16 exceptions "
+"of EU Directive 2011/83 (custom-made, perishable, sealed digital content "
+"opened by the consumer, etc.)."
+msgstr ""
+"Marca esta casilla si el producto está entre las excepciones del artículo "
+"16 de la Directiva (UE) 2011/83 (productos personalizados, perecederos, "
+"contenidos digitales precintados que el consumidor haya abierto, etc.)."
+
+#. translators: %s: parent category name.
+#: includes/functions-exclusions.php
+#, php-format
+msgid ""
+"Inherited from the “%s” category, marked as excluded in EU Withdrawal "
+"settings. Remove the category from the exclusion list (or change the "
+"product's categories) to lift the exclusion."
+msgstr ""
+"Heredado de la categoría «%s», marcada como excluida en los ajustes de "
+"Desistimiento UE. Quita la categoría de la lista de exclusiones (o cambia "
+"las categorías del producto) para anular la exclusión."
+
+#: includes/functions-exclusions.php
+msgid "Insufficient permissions."
+msgstr "Permisos insuficientes."
+
+#: includes/functions-exclusions.php
+msgid "Invalid request."
+msgstr "Solicitud no válida."
+
+#: includes/functions-exclusions.php
+msgid "WooCommerce is not active."
+msgstr "WooCommerce no está activo."
+
+#: includes/functions-exclusions.php
+msgid "Category not found."
+msgstr "Categoría no encontrada."
+
+#: includes/functions-assets.php
+msgid "No matching categories."
+msgstr "No hay coincidencias."
+
+#: includes/functions-cpt.php
+msgid "Edit withdrawal"
+msgstr "Editar desistimiento"
+
+#: includes/functions-cpt.php
+msgid "New withdrawal"
+msgstr "Nuevo desistimiento"
+
+#: includes/functions-cpt.php
+msgid "View withdrawals"
+msgstr "Ver desistimientos"
+
+#: includes/functions-cpt.php
+msgid "Filter withdrawals list"
+msgstr "Filtrar lista de desistimientos"
+
+#: includes/functions-cpt.php
+msgid "Withdrawals list navigation"
+msgstr "Navegación de la lista de desistimientos"
+
+#: includes/functions-cpt.php
+msgid "Withdrawals list"
+msgstr "Lista de desistimientos"
 
 #~ msgid "Mark as rejected"
 #~ msgstr "Marcar como rechazada"

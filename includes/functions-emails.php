@@ -12,12 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Send confirmation email to the customer.
  *
- * @param string $email Customer email.
- * @param string $name  Customer name.
- * @param string $order Order reference.
- * @param string $scope Withdrawal scope.
+ * @param string $email        Customer email.
+ * @param string $name         Customer name.
+ * @param string $order        Order reference.
+ * @param string $scope        Withdrawal scope.
+ * @param string $receipt_hash Optional SHA-256 receipt hash to include as proof.
  */
-function ayudawp_euw_send_customer_email( $email, $name, $order, $scope ) {
+function ayudawp_euw_send_customer_email( $email, $name, $order, $scope, $receipt_hash = '' ) {
 
 	$site_name = get_bloginfo( 'name' );
 
@@ -44,12 +45,20 @@ function ayudawp_euw_send_customer_email( $email, $name, $order, $scope ) {
 		sprintf( '%s: %s', __( 'Scope', 'eu-withdrawal-compliance' ), $scope_label ),
 		'',
 		__( 'We will review the request and confirm next steps within 24 hours. If you do not hear from us, please reply to this email.', 'eu-withdrawal-compliance' ),
-		'',
-		sprintf(
-			/* translators: %s: site name. */
-			__( 'Thanks, the %s team', 'eu-withdrawal-compliance' ),
-			$site_name
-		),
+	);
+
+	if ( '' !== $receipt_hash ) {
+		$lines[] = '';
+		$lines[] = '----';
+		$lines[] = __( 'Receipt verification code (keep this email as proof of submission):', 'eu-withdrawal-compliance' );
+		$lines[] = $receipt_hash;
+	}
+
+	$lines[] = '';
+	$lines[] = sprintf(
+		/* translators: %s: site name. */
+		__( 'Thanks, the %s team', 'eu-withdrawal-compliance' ),
+		$site_name
 	);
 
 	$message = implode( "\r\n", $lines );
@@ -62,14 +71,16 @@ function ayudawp_euw_send_customer_email( $email, $name, $order, $scope ) {
 /**
  * Send notification to the shop admin.
  *
- * @param int    $post_id Withdrawal CPT ID.
- * @param string $name    Customer name.
- * @param string $email   Customer email.
- * @param string $order   Order reference.
- * @param string $scope   Withdrawal scope.
- * @param string $details Free-text details.
+ * @param int                          $post_id        Withdrawal CPT ID.
+ * @param string                       $name           Customer name.
+ * @param string                       $email          Customer email.
+ * @param string                       $order          Order reference.
+ * @param string                       $scope          Withdrawal scope.
+ * @param string                       $details        Free-text details.
+ * @param array<int, array<string, mixed>> $excluded_items Items in the order
+ *     that match an Article 16 exclusion, if any.
  */
-function ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, $details ) {
+function ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, $details, $excluded_items = array() ) {
 
 	$admin_email = get_option( 'ayudawp_euw_notify_email', get_option( 'admin_email' ) );
 
@@ -102,10 +113,20 @@ function ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, 
 		'',
 		__( 'Details:', 'eu-withdrawal-compliance' ),
 		( ! empty( $details ) ? $details : __( '(empty)', 'eu-withdrawal-compliance' ) ),
-		'',
-		__( 'View in admin:', 'eu-withdrawal-compliance' ),
-		$edit_link,
 	);
+
+	if ( ! empty( $excluded_items ) ) {
+		$lines[] = '';
+		$lines[] = __( '⚠ The order contains items flagged as excluded from the right of withdrawal (Article 16):', 'eu-withdrawal-compliance' );
+		foreach ( $excluded_items as $item ) {
+			$lines[] = sprintf( '- %s × %d', $item['name'], (int) $item['quantity'] );
+		}
+		$lines[] = __( 'Review manually before accepting or rejecting. A partial withdrawal over non-excluded items may still be valid.', 'eu-withdrawal-compliance' );
+	}
+
+	$lines[] = '';
+	$lines[] = __( 'View in admin:', 'eu-withdrawal-compliance' );
+	$lines[] = $edit_link;
 
 	$message = implode( "\r\n", $lines );
 

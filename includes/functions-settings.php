@@ -60,6 +60,36 @@ function ayudawp_euw_register_settings() {
 		)
 	);
 
+	register_setting(
+		'ayudawp_euw_settings_group',
+		'ayudawp_euw_grace_days',
+		array(
+			'type'              => 'integer',
+			'sanitize_callback' => 'absint',
+			'default'           => 0,
+		)
+	);
+
+	register_setting(
+		'ayudawp_euw_settings_group',
+		'ayudawp_euw_deadline_basis',
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'ayudawp_euw_sanitize_deadline_basis',
+			'default'           => 'order_date',
+		)
+	);
+
+	register_setting(
+		'ayudawp_euw_settings_group',
+		'ayudawp_euw_excluded_categories',
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'ayudawp_euw_sanitize_excluded_categories',
+			'default'           => array(),
+		)
+	);
+
 	add_settings_section(
 		'ayudawp_euw_main_section',
 		__( 'General', 'eu-withdrawal-compliance' ),
@@ -81,6 +111,44 @@ function ayudawp_euw_register_settings() {
 		'ayudawp_euw_field_page_callback',
 		'ayudawp-euw-settings',
 		'ayudawp_euw_main_section'
+	);
+
+	add_settings_section(
+		'ayudawp_euw_deadline_section',
+		__( 'Withdrawal deadline', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_deadline_section_callback',
+		'ayudawp-euw-settings'
+	);
+
+	add_settings_field(
+		'ayudawp_euw_deadline_basis',
+		__( 'Calculate deadline from', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_field_deadline_basis_callback',
+		'ayudawp-euw-settings',
+		'ayudawp_euw_deadline_section'
+	);
+
+	add_settings_field(
+		'ayudawp_euw_grace_days',
+		__( 'Grace days', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_field_grace_days_callback',
+		'ayudawp-euw-settings',
+		'ayudawp_euw_deadline_section'
+	);
+
+	add_settings_section(
+		'ayudawp_euw_exclusions_section',
+		__( 'Article 16 exclusions', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_exclusions_section_callback',
+		'ayudawp-euw-settings'
+	);
+
+	add_settings_field(
+		'ayudawp_euw_excluded_categories',
+		__( 'Excluded product categories', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_field_excluded_categories_callback',
+		'ayudawp-euw-settings',
+		'ayudawp_euw_exclusions_section'
 	);
 }
 add_action( 'admin_init', 'ayudawp_euw_register_settings' );
@@ -144,6 +212,168 @@ function ayudawp_euw_field_page_callback() {
 	);
 
 	echo '<p class="description">' . esc_html__( 'Page where the withdrawal form is published. Make sure it includes the [ayudawp_withdrawal_form] shortcode.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Deadline section description.
+ */
+function ayudawp_euw_deadline_section_callback() {
+
+	echo '<p>' . esc_html__( 'EU Directive 2011/83 sets a 14-day withdrawal period. Some member states extend this baseline; use these settings to adjust the calculation if your jurisdiction or contract terms require it.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Sanitize the deadline basis option to one of the allowed values.
+ *
+ * @param mixed $value Submitted value.
+ * @return string Allowed key, falling back to 'order_date'.
+ */
+function ayudawp_euw_sanitize_deadline_basis( $value ) {
+
+	$value   = sanitize_key( (string) $value );
+	$allowed = array( 'order_date', 'completion_date' );
+
+	return in_array( $value, $allowed, true ) ? $value : 'order_date';
+}
+
+/**
+ * Deadline basis selector callback.
+ */
+function ayudawp_euw_field_deadline_basis_callback() {
+
+	$value = get_option( 'ayudawp_euw_deadline_basis', 'order_date' );
+
+	$options = array(
+		'order_date'      => __( 'Order date (when the customer placed the order)', 'eu-withdrawal-compliance' ),
+		'completion_date' => __( 'Completion date (when the WooCommerce order was marked as completed)', 'eu-withdrawal-compliance' ),
+	);
+
+	echo '<select name="ayudawp_euw_deadline_basis" id="ayudawp_euw_deadline_basis">';
+	foreach ( $options as $key => $label ) {
+		printf(
+			'<option value="%1$s" %2$s>%3$s</option>',
+			esc_attr( $key ),
+			selected( $value, $key, false ),
+			esc_html( $label )
+		);
+	}
+	echo '</select>';
+
+	echo '<p class="description">' . esc_html__( 'If you choose Completion date but the order is not yet completed, the plugin falls back to the order date.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Grace days numeric field callback.
+ */
+function ayudawp_euw_field_grace_days_callback() {
+
+	$value = (int) get_option( 'ayudawp_euw_grace_days', 0 );
+
+	printf(
+		'<input type="number" name="ayudawp_euw_grace_days" id="ayudawp_euw_grace_days" value="%d" min="0" max="365" step="1" class="small-text"> %s',
+		(int) $value,
+		esc_html__( 'days', 'eu-withdrawal-compliance' )
+	);
+
+	echo '<p class="description">' . esc_html__( 'Extra days added on top of the 14-day legal minimum. Useful when you offer a longer return window than required.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Exclusions section description.
+ */
+function ayudawp_euw_exclusions_section_callback() {
+
+	echo '<p>' . esc_html__( 'Article 16 of EU Directive 2011/83 lists categories of goods exempted from the right of withdrawal: custom-made products, perishable goods, sealed digital content opened by the consumer, hygiene-sealed items, etc. Pick the WooCommerce categories that fit those exceptions, or mark individual products in the product editor under "Excluded from right of withdrawal". Withdrawal requests on orders containing excluded items are flagged for manual review — never auto-rejected, since a partial withdrawal over the rest of the order can still be valid.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Sanitize the excluded categories option to a clean array of term IDs.
+ *
+ * @param mixed $value Submitted value.
+ * @return array<int, int>
+ */
+function ayudawp_euw_sanitize_excluded_categories( $value ) {
+
+	if ( ! is_array( $value ) ) {
+		return array();
+	}
+
+	return array_values( array_filter( array_map( 'absint', $value ) ) );
+}
+
+/**
+ * Excluded categories instant-search field.
+ *
+ * Renders a typeahead input that adds chips to a list below. Each add/remove
+ * is auto-saved via AJAX, no "Save changes" needed for this particular field.
+ */
+function ayudawp_euw_field_excluded_categories_callback() {
+
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		echo '<p class="description">' . esc_html__( 'WooCommerce is not active, so there are no product categories to choose from.', 'eu-withdrawal-compliance' ) . '</p>';
+		return;
+	}
+
+	$selected_ids   = ayudawp_euw_get_excluded_category_ids();
+	$selected_terms = array();
+
+	if ( ! empty( $selected_ids ) ) {
+
+		$terms_query = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+				'include'    => $selected_ids,
+				'orderby'    => 'include',
+			)
+		);
+
+		if ( ! is_wp_error( $terms_query ) ) {
+			$selected_terms = $terms_query;
+		}
+	}
+	?>
+	<div class="ayudawp-euw-cat-picker"
+		data-nonce="<?php echo esc_attr( wp_create_nonce( 'ayudawp_euw_exclusions' ) ); ?>"
+		data-search-action="ayudawp_euw_search_categories"
+		data-toggle-action="ayudawp_euw_toggle_excluded_category">
+
+		<div class="ayudawp-euw-cat-picker__search">
+			<input type="search"
+				class="ayudawp-euw-cat-picker__input regular-text"
+				id="ayudawp-euw-cat-picker-input"
+				placeholder="<?php esc_attr_e( 'Search categories to exclude…', 'eu-withdrawal-compliance' ); ?>"
+				autocomplete="off"
+				aria-controls="ayudawp-euw-cat-picker-results"
+				aria-expanded="false">
+			<ul class="ayudawp-euw-cat-picker__results" id="ayudawp-euw-cat-picker-results" role="listbox" hidden></ul>
+		</div>
+
+		<ul class="ayudawp-euw-cat-picker__chips" id="ayudawp-euw-cat-picker-chips" aria-live="polite">
+			<?php foreach ( $selected_terms as $term ) : ?>
+				<?php $breadcrumb = ayudawp_euw_get_category_breadcrumb( $term ); ?>
+				<li class="ayudawp-euw-chip" data-term-id="<?php echo esc_attr( (int) $term->term_id ); ?>">
+					<span class="ayudawp-euw-chip__label">
+						<strong><?php echo esc_html( $term->name ); ?></strong>
+						<?php if ( '' !== $breadcrumb ) : ?>
+							<span class="ayudawp-euw-chip__breadcrumb">(<?php echo esc_html( $breadcrumb ); ?>)</span>
+						<?php endif; ?>
+					</span>
+					<button type="button"
+						class="ayudawp-euw-chip__remove"
+						aria-label="<?php
+							/* translators: %s: category name. */
+							echo esc_attr( sprintf( __( 'Remove %s from exclusions', 'eu-withdrawal-compliance' ), $term->name ) );
+						?>">×</button>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
+		<p class="description">
+			<?php esc_html_e( 'Type to search a product category and click it to add. Subcategories inherit the exclusion automatically. Changes are saved instantly.', 'eu-withdrawal-compliance' ); ?>
+		</p>
+	</div>
+	<?php
 }
 
 /**
