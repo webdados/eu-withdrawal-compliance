@@ -63,17 +63,14 @@ function ayudawp_euw_activate() {
 	// schema changes that require another flush_rewrite_rules() pass.
 	update_option( 'ayudawp_euw_version', AYUDAWP_EUW_VERSION );
 
-	// Load translations directly from the bundled MO file so the sample
-	// template text below is created in the site language. WordPress's
-	// just-in-time loader does not run during activation hooks, so we
-	// trigger the load manually here. load_textdomain() is the low-level
-	// counterpart of load_plugin_textdomain() and is not discouraged on
-	// WordPress.org.
-	$ayudawp_euw_mofile = AYUDAWP_EUW_DIR . 'languages/eu-withdrawal-compliance-' . get_locale() . '.mo';
-
-	if ( file_exists( $ayudawp_euw_mofile ) ) {
-		load_textdomain( 'eu-withdrawal-compliance', $ayudawp_euw_mofile );
-	}
+	// Load translations during activation so the sample template page below
+	// is created in the site language. WordPress's just-in-time loader does
+	// not run during activation hooks, so we trigger the load manually here.
+	load_plugin_textdomain(
+		'eu-withdrawal-compliance',
+		false,
+		dirname( AYUDAWP_EUW_BASENAME ) . '/languages'
+	);
 
 	// Trigger the welcome notice on the next admin page load.
 	set_transient( 'ayudawp_euw_just_activated', 1, MINUTE_IN_SECONDS );
@@ -165,6 +162,25 @@ add_action(
 		}
 	}
 );
+
+/**
+ * Load plugin translations on init so the plugin_locale filter is applied
+ * (required for WPML, Polylang and TranslatePress) and so labels registered
+ * by other init callbacks (CPT, custom status, WC My Account endpoint) are
+ * already translated when those callbacks run.
+ *
+ * Priority 1 ensures we run before the default-priority init callbacks that
+ * register translated labels in functions-cpt.php and functions-woocommerce.php.
+ */
+function ayudawp_euw_load_textdomain() {
+
+	load_plugin_textdomain(
+		'eu-withdrawal-compliance',
+		false,
+		dirname( AYUDAWP_EUW_BASENAME ) . '/languages'
+	);
+}
+add_action( 'init', 'ayudawp_euw_load_textdomain', 1 );
 
 /**
  * Resolve the URL of the settings page (different parent depending on WC).
