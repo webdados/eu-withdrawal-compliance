@@ -91,7 +91,12 @@ function ayudawp_euw_enqueue_admin( $hook ) {
 	$is_cpt_screen      = ( 'ayudawp_withdrawal' === $screen->post_type );
 	$is_settings_screen = ( false !== strpos( (string) $screen->id, 'ayudawp-euw-settings' ) );
 
-	if ( ! $is_cpt_screen && ! $is_settings_screen ) {
+	// WC orders list (legacy and HPOS): we paint the withdrawal status badge
+	// in the "Withdrawal" column there too, so the same admin CSS is needed.
+	$screen_id    = (string) $screen->id;
+	$is_wc_orders = ( 'edit-shop_order' === $screen_id || 'woocommerce_page_wc-orders' === $screen_id );
+
+	if ( ! $is_cpt_screen && ! $is_settings_screen && ! $is_wc_orders ) {
 		return;
 	}
 

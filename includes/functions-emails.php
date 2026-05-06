@@ -121,3 +121,79 @@ function ayudawp_euw_send_admin_email( $post_id, $name, $email, $order, $scope, 
 
 	wp_mail( $admin_email, $subject, $message, $headers );
 }
+
+/**
+ * Notify the customer that the status of their withdrawal request changed.
+ *
+ * Only fires for accepted/rejected/completed transitions; pending is the
+ * initial state and already covered by the submission acknowledgement.
+ *
+ * @param string $email   Customer email.
+ * @param string $name    Customer name.
+ * @param string $order   Order reference.
+ * @param string $status  New status (accepted|rejected|completed).
+ * @param string $comment Optional admin comment.
+ */
+function ayudawp_euw_send_status_email( $email, $name, $order, $status, $comment = '' ) {
+
+	$site_name = get_bloginfo( 'name' );
+
+	$subjects = array(
+		'accepted'  => sprintf(
+			/* translators: %s: site name. */
+			__( '[%s] Your withdrawal request has been accepted', 'eu-withdrawal-compliance' ),
+			$site_name
+		),
+		'rejected'  => sprintf(
+			/* translators: %s: site name. */
+			__( '[%s] Your withdrawal request has been rejected', 'eu-withdrawal-compliance' ),
+			$site_name
+		),
+		'completed' => sprintf(
+			/* translators: %s: site name. */
+			__( '[%s] Your withdrawal has been completed', 'eu-withdrawal-compliance' ),
+			$site_name
+		),
+	);
+
+	$bodies = array(
+		'accepted'  => __( 'We have accepted your withdrawal request. We will proceed with the refund according to the legal deadline.', 'eu-withdrawal-compliance' ),
+		'rejected'  => __( 'We have reviewed your withdrawal request and unfortunately we cannot accept it.', 'eu-withdrawal-compliance' ),
+		'completed' => __( 'Your withdrawal has been processed and the refund issued. The funds may take a few business days to appear in your account.', 'eu-withdrawal-compliance' ),
+	);
+
+	if ( ! isset( $subjects[ $status ] ) ) {
+		return;
+	}
+
+	$lines = array(
+		sprintf(
+			/* translators: %s: customer name. */
+			__( 'Hi %s,', 'eu-withdrawal-compliance' ),
+			$name
+		),
+		'',
+		$bodies[ $status ],
+		'',
+		sprintf( '%s: %s', __( 'Order', 'eu-withdrawal-compliance' ), $order ),
+	);
+
+	if ( '' !== $comment ) {
+		$lines[] = '';
+		$lines[] = __( 'Additional information from our team:', 'eu-withdrawal-compliance' );
+		$lines[] = $comment;
+	}
+
+	$lines[] = '';
+	$lines[] = sprintf(
+		/* translators: %s: site name. */
+		__( 'Thanks, the %s team', 'eu-withdrawal-compliance' ),
+		$site_name
+	);
+
+	$message = implode( "\r\n", $lines );
+
+	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+
+	wp_mail( $email, $subjects[ $status ], $message, $headers );
+}

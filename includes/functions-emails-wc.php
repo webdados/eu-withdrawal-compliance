@@ -74,19 +74,13 @@ function ayudawp_euw_inject_email_notice( $order, $sent_to_admin, $plain_text, $
 	}
 
 	?>
-	<div style="margin-top: 30px; padding: 16px 20px; background-color: #f5f7fa; border-left: 4px solid #2271b1; font-size: 14px;">
-		<p style="margin: 0 0 8px 0; font-weight: 600;">
-			<?php esc_html_e( 'Right of withdrawal', 'eu-withdrawal-compliance' ); ?>
-		</p>
-		<p style="margin: 0 0 12px 0;">
-			<?php esc_html_e( 'You have 14 days from receipt to exercise your withdrawal right without giving any reason.', 'eu-withdrawal-compliance' ); ?>
-		</p>
-		<p style="margin: 0;">
-			<a href="<?php echo esc_url( $page_url ); ?>" style="display: inline-block; padding: 10px 18px; background-color: #2271b1; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 600;">
-				<?php esc_html_e( 'Exercise withdrawal right here', 'eu-withdrawal-compliance' ); ?>
-			</a>
-		</p>
-	</div>
+	<h3><?php esc_html_e( 'Right of withdrawal', 'eu-withdrawal-compliance' ); ?></h3>
+	<p><?php esc_html_e( 'You have 14 days from receipt to exercise your withdrawal right without giving any reason.', 'eu-withdrawal-compliance' ); ?></p>
+	<p>
+		<a href="<?php echo esc_url( $page_url ); ?>" style="display: inline-block; padding: 10px 18px; background-color: #2271b1; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 600;">
+			<?php esc_html_e( 'Exercise withdrawal right here', 'eu-withdrawal-compliance' ); ?>
+		</a>
+	</p>
 	<?php
 }
 add_action( 'woocommerce_email_after_order_table', 'ayudawp_euw_inject_email_notice', 20, 4 );

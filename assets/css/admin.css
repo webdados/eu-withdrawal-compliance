@@ -9,6 +9,12 @@
 	font-size: 0.85rem;
 	font-weight: 600;
 	line-height: 1.4;
+	text-decoration: none;
+}
+
+a.ayudawp-euw-status:hover {
+	text-decoration: none;
+	opacity: 0.85;
 }
 
 .ayudawp-euw-status-pending {
@@ -29,6 +35,14 @@
 .ayudawp-euw-status-completed {
 	background: #e7f1fc;
 	color: #1d4e7a;
+}
+
+/* Empty state in the Withdrawal column on the orders screen.
+   Same box dimensions as the badges so the column lines up regardless of
+   whether the row has a request or not. */
+.ayudawp-euw-status-empty {
+	background: transparent;
+	color: #999;
 }
 
 .ayudawp-euw-meta-table {

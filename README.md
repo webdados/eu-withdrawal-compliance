@@ -14,8 +14,10 @@ WordPress plugin that adds the EU online withdrawal function required by Directi
 - Adds a "Right of withdrawal" endpoint inside WooCommerce **My Account** with a per-order "Withdraw" button shown only while the 14-day window is open.
 - Injects an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, on-hold and completed orders), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function.
 - Validates the email/order pair against the WooCommerce database, including the 14-day deadline check.
-- Adds a private order note to the WooCommerce order linking the request to the log entry.
-- Sends confirmation email to the customer and notification email to the shop admin, with reply-to pointing to the customer.
+- Adds a private note to the WooCommerce order at every step of the lifecycle: when the request is received and again when it is accepted, rejected or marked as completed.
+- Sends a confirmation email to the customer on submission **and** a follow-up email when the request is accepted, rejected or completed. Optional admin comment is forwarded to the customer (required for rejections, optional for completed). Notification email to the shop admin uses reply-to pointing to the customer.
+- Bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
+- "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
 - Logs every request as a private custom post type with status tracking (pending, accepted, rejected, completed), IP and user agent for legal traceability.
 - Integrates inside the WooCommerce admin menu when WooCommerce is active (settings live at **WooCommerce → EU Withdrawal**, request log at **WooCommerce → Withdrawals**). Falls back to a top-level menu when running standalone.
 
@@ -62,6 +64,7 @@ After activation:
 | Action | Purpose |
 |--------|---------|
 | `ayudawp_euw_after_submission` | Fires after a withdrawal request has been processed. Receives the CPT ID and the submission data array. |
+| `ayudawp_euw_after_status_change` | Fires after a withdrawal request changes status (individually or via bulk action). Receives the CPT ID, the new status and the optional admin comment. |
 
 ### Migrating from the old "Download ZIP" install
 
@@ -77,6 +80,19 @@ If you installed an early version of this plugin by clicking the green **Code �
 This plugin implements the **minimum compliant version** of EU Directive 2023/2673. It works on all member states from 19 June 2026.
 
 The German interpretation of the directive (the strictest known so far) requires a two-step confirmation flow: a first button that opens the function, an intermediate page with the customer's data, and a second "confirm withdrawal" button that submits the request. This is not yet implemented because Spanish transposition is still pending as of May 2026 and a future update may be required to align with the final Spanish Real Decreto.
+
+### Changelog
+
+**1.1.0**
+- Customer email notifications on every status change (accepted, rejected, completed).
+- Optional admin comment forwarded to the customer on status change. Required for rejections, optional for completed requests.
+- WooCommerce order notes on every status change so the order timeline reflects the full withdrawal lifecycle.
+- Bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
+- "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
+- Trimmed inline styles in the WooCommerce email notice so it inherits the email template styles instead of forcing a coloured callout box.
+
+**1.0.0**
+- Initial release.
 
 ### License
 
@@ -104,8 +120,10 @@ Plugin de WordPress que añade la función online de desistimiento exigida por l
 - Añade un endpoint «Derecho de desistimiento» dentro de **Mi cuenta** de WooCommerce, con un botón «Desistir» por pedido que solo aparece mientras la ventana de 14 días sigue abierta.
 - Inyecta un aviso «Solicitar desistimiento aquí» con enlace al formulario en los emails transaccionales de WooCommerce (pedido recibido, en espera y completado), cumpliendo la obligación del comerciante de informar al consumidor sobre la existencia y ubicación de la función de desistimiento.
 - Valida el par email/pedido contra la base de datos de WooCommerce, incluyendo la comprobación del plazo de 14 días.
-- Añade una nota privada al pedido de WooCommerce enlazando la solicitud con el registro del log.
-- Envía email de confirmación al cliente y email de notificación al admin de la tienda, con `reply-to` apuntando al cliente para responderle de un solo clic.
+- Añade notas privadas al pedido de WooCommerce en cada paso del ciclo de vida: cuando se recibe la solicitud y de nuevo cuando se acepta, se rechaza o se marca como completada.
+- Envía email de confirmación al cliente al recibir la solicitud **y además** un email de seguimiento cuando se acepta, se rechaza o se marca como completada. Se puede incluir un comentario opcional del administrador en el email al cliente (obligatorio en rechazos, opcional en completadas). El email al admin lleva `reply-to` apuntando al cliente.
+- Acciones en lote en el listado de solicitudes para marcar varias como aceptadas, rechazadas o completadas a la vez.
+- Columna «Desistimiento» en la pantalla de pedidos de WooCommerce (legacy y HPOS) que muestra el estado de la solicitud asociada al pedido. Activable/desactivable desde «Opciones de pantalla».
 - Registra cada solicitud como un custom post type privado con seguimiento de estados (pendiente, aceptada, rechazada, completada), IP y user agent para trazabilidad legal.
 - Se integra dentro del menú de administración de WooCommerce cuando WooCommerce está activo (los ajustes viven en **WooCommerce → EU Withdrawal**, el log de solicitudes en **WooCommerce → Withdrawals**). Si WooCommerce no está activo, cae a un menú de nivel superior propio.
 
@@ -152,6 +170,7 @@ Tras la activación:
 | Acción | Para qué sirve |
 |--------|---------|
 | `ayudawp_euw_after_submission` | Se dispara tras procesar una solicitud de desistimiento. Recibe el ID del CPT y el array con los datos del envío. |
+| `ayudawp_euw_after_status_change` | Se dispara tras un cambio de estado en una solicitud (individual o en lote). Recibe el ID del CPT, el nuevo estado y el comentario opcional del administrador. |
 
 ### Migrar desde la instalación antigua de "Download ZIP"
 
@@ -167,6 +186,19 @@ Si instalaste una primera versión del plugin pulsando el botón verde **Code �
 Este plugin implementa la **versión mínima conforme** con la Directiva (UE) 2023/2673. Es válida en todos los Estados miembros desde el 19 de junio de 2026.
 
 La interpretación alemana de la directiva (la más estricta conocida hasta la fecha) exige un flujo de doble confirmación: un primer botón que abre la función, una página intermedia con los datos del cliente y un segundo botón «confirmar desistimiento» que envía la solicitud. Aún no está implementado porque la transposición española sigue pendiente a 1 de mayo de 2026, y es probable que se necesite una actualización futura para alinear el plugin con el Real Decreto definitivo.
+
+### Registro de cambios
+
+**1.1.0**
+- Emails al cliente en cada cambio de estado (aceptada, rechazada, completada).
+- Comentario opcional del administrador que se envía al cliente en el email de cambio de estado. Obligatorio en rechazos, opcional en completadas.
+- Notas en el pedido de WooCommerce en cada cambio de estado, para que la línea temporal del pedido refleje todo el ciclo de vida del desistimiento.
+- Acciones en lote en el listado de solicitudes para marcar varias como aceptadas, rechazadas o completadas a la vez.
+- Columna «Desistimiento» en la pantalla de pedidos de WooCommerce (legacy y HPOS) que muestra el estado de la solicitud asociada al pedido. Activable/desactivable desde «Opciones de pantalla».
+- Reducidos los estilos inline del aviso en el email de WooCommerce para que herede los estilos de la plantilla del email en lugar de forzar una caja con colores propios.
+
+**1.0.0**
+- Versión inicial.
 
 ### Licencia
 

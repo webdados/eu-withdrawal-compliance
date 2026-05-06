@@ -4,7 +4,7 @@ Tags: woocommerce, eu, gdpr, withdrawal, ecommerce
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,9 +21,11 @@ This plugin gives you a clean, ready-to-deploy implementation:
 * A "Right of withdrawal" endpoint inside the WooCommerce **My Account** area, with a per-order "Withdraw" button shown only while the 14-day window is open.
 * Automatic injection of an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, on-hold and completed orders), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function.
 * Automatic verification of the order/email pair when WooCommerce is active, including the 14-day deadline check.
-* A private order note added to the WooCommerce order linking the request to the log entry.
-* Confirmation email to the customer and notification email to the shop admin (with reply-to set to the customer for fast handling, sanitized against header injection).
+* Private order notes added to the WooCommerce order at every step of the lifecycle: when the request is received and again when it is accepted, rejected or marked as completed (including the admin's comment if any).
+* Confirmation email to the customer on submission and a follow-up email when the request is accepted, rejected or completed. Optional admin comment is forwarded to the customer (required for rejections, optional for completed). Notification email to the shop admin (with reply-to set to the customer for fast handling, sanitized against header injection).
 * Full request log as a private custom post type, with status tracking (pending, accepted, rejected, completed), customer details, IP address and user agent for legal traceability.
+* Bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
+* "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
 * Native integration in the WooCommerce admin menu: settings live at **WooCommerce → EU Withdrawal**, request log at **WooCommerce → Withdrawals**.
 * Honeypot anti-spam protection.
 * Conditional asset loading: CSS only loads on the withdrawal page and inside the plugin admin screens.
@@ -80,10 +82,21 @@ The plugin asks for explicit privacy policy acceptance before submission and sto
 
 == Changelog ==
 
+= 1.1.0 =
+* New: customer email notifications on every status change (accepted, rejected, completed).
+* New: optional admin comment forwarded to the customer on status change. Required for rejections, optional for completed requests.
+* New: WooCommerce order notes on every status change so the order timeline reflects the full withdrawal lifecycle.
+* New: bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
+* New: "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
+* Tweak: trimmed inline styles in the WooCommerce email notice so it inherits the email template styles instead of forcing a coloured callout box.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds customer notifications on status changes, bulk actions, a withdrawal column in the orders list and order notes for the full lifecycle.
 
 = 1.0.0 =
 First public version. Deploy before June 19, 2026 to comply with EU Directive 2023/2673.

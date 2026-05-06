@@ -125,6 +125,53 @@ function ayudawp_euw_add_wc_order_note( $wc_order_id, $cpt_id, $scope, $details 
 }
 
 /**
+ * Add a private note to the WC order when a withdrawal status changes.
+ *
+ * @param int    $wc_order_id WC order ID.
+ * @param int    $cpt_id      Withdrawal CPT ID.
+ * @param string $status      New status.
+ * @param string $comment     Optional admin comment.
+ */
+function ayudawp_euw_add_status_order_note( $wc_order_id, $cpt_id, $status, $comment = '' ) {
+
+	if ( ! function_exists( 'wc_get_order' ) ) {
+		return;
+	}
+
+	$order = wc_get_order( $wc_order_id );
+
+	if ( ! $order ) {
+		return;
+	}
+
+	$labels = array(
+		'pending'   => __( 'pending', 'eu-withdrawal-compliance' ),
+		'accepted'  => __( 'accepted', 'eu-withdrawal-compliance' ),
+		'rejected'  => __( 'rejected', 'eu-withdrawal-compliance' ),
+		'completed' => __( 'completed', 'eu-withdrawal-compliance' ),
+	);
+
+	$label = isset( $labels[ $status ] ) ? $labels[ $status ] : $status;
+
+	$note = sprintf(
+		/* translators: 1: status label, 2: log ID. */
+		__( 'EU withdrawal request %1$s. Log ID: #%2$d', 'eu-withdrawal-compliance' ),
+		$label,
+		$cpt_id
+	);
+
+	if ( '' !== $comment ) {
+		$note .= "\n" . sprintf(
+			/* translators: %s: admin comment. */
+			__( 'Comment: %s', 'eu-withdrawal-compliance' ),
+			$comment
+		);
+	}
+
+	$order->add_order_note( $note, 0, false );
+}
+
+/**
  * Register the My Account endpoint for WooCommerce.
  */
 function ayudawp_euw_register_wc_endpoint() {
@@ -251,3 +298,145 @@ function ayudawp_euw_prefill_from_query( $atts ) {
 	return $atts;
 }
 add_filter( 'shortcode_atts_ayudawp_withdrawal_form', 'ayudawp_euw_prefill_from_query' );
+
+/**
+ * Find the most recent withdrawal request linked to a WC order.
+ *
+ * Returns 0 if none exists.
+ *
+ * @param int $wc_order_id WC order ID.
+ * @return int Withdrawal CPT ID or 0.
+ */
+function ayudawp_euw_get_request_for_order( $wc_order_id ) {
+
+	$wc_order_id = absint( $wc_order_id );
+
+	if ( ! $wc_order_id ) {
+		return 0;
+	}
+
+	$query = new WP_Query(
+		array(
+			'post_type'              => 'ayudawp_withdrawal',
+			'post_status'            => 'any',
+			'posts_per_page'         => 1,
+			'orderby'                => 'date',
+			'order'                  => 'DESC',
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'meta_query'             => array(
+				array(
+					'key'   => '_ayudawp_euw_wc_order_id',
+					'value' => $wc_order_id,
+				),
+			),
+		)
+	);
+
+	if ( empty( $query->posts ) ) {
+		return 0;
+	}
+
+	return (int) $query->posts[0];
+}
+
+/**
+ * Add the "Withdrawal" column to the WC orders screen (legacy + HPOS).
+ *
+ * @param array $columns Existing columns.
+ * @return array
+ */
+function ayudawp_euw_add_orders_column( $columns ) {
+
+	$new = array();
+
+	foreach ( $columns as $key => $label ) {
+		$new[ $key ] = $label;
+
+		// Insert after the order status column for both legacy and HPOS.
+		if ( 'order_status' === $key ) {
+			$new['ayudawp_euw_withdrawal'] = __( 'Withdrawal', 'eu-withdrawal-compliance' );
+		}
+	}
+
+	// If neither table has an order_status column, append at the end.
+	if ( ! isset( $new['ayudawp_euw_withdrawal'] ) ) {
+		$new['ayudawp_euw_withdrawal'] = __( 'Withdrawal', 'eu-withdrawal-compliance' );
+	}
+
+	return $new;
+}
+add_filter( 'manage_edit-shop_order_columns', 'ayudawp_euw_add_orders_column' );
+add_filter( 'manage_woocommerce_page_wc-orders_columns', 'ayudawp_euw_add_orders_column' );
+
+/**
+ * Render the "Withdrawal" column for legacy CPT-based orders.
+ *
+ * @param string $column  Column key.
+ * @param int    $post_id Post ID.
+ */
+function ayudawp_euw_render_orders_column_legacy( $column, $post_id ) {
+
+	if ( 'ayudawp_euw_withdrawal' !== $column ) {
+		return;
+	}
+
+	echo ayudawp_euw_orders_column_html( $post_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped internally.
+}
+add_action( 'manage_shop_order_posts_custom_column', 'ayudawp_euw_render_orders_column_legacy', 10, 2 );
+
+/**
+ * Render the "Withdrawal" column for HPOS orders.
+ *
+ * @param string $column Column key.
+ * @param object $order  WC_Order instance.
+ */
+function ayudawp_euw_render_orders_column_hpos( $column, $order ) {
+
+	if ( 'ayudawp_euw_withdrawal' !== $column ) {
+		return;
+	}
+
+	$order_id = is_object( $order ) && method_exists( $order, 'get_id' ) ? $order->get_id() : 0;
+
+	echo ayudawp_euw_orders_column_html( $order_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped internally.
+}
+add_action( 'manage_woocommerce_page_wc-orders_custom_column', 'ayudawp_euw_render_orders_column_hpos', 10, 2 );
+
+/**
+ * Build the HTML shown inside the "Withdrawal" column for an order.
+ *
+ * @param int $wc_order_id WC order ID.
+ * @return string Already-escaped HTML.
+ */
+function ayudawp_euw_orders_column_html( $wc_order_id ) {
+
+	$cpt_id = ayudawp_euw_get_request_for_order( $wc_order_id );
+
+	if ( ! $cpt_id ) {
+		return '<span class="ayudawp-euw-status ayudawp-euw-status-empty" aria-hidden="true">—</span><span class="screen-reader-text">' . esc_html__( 'No withdrawal request', 'eu-withdrawal-compliance' ) . '</span>';
+	}
+
+	$status = get_post_meta( $cpt_id, '_ayudawp_euw_status', true );
+	$status = $status ? $status : 'pending';
+
+	$labels = array(
+		'pending'   => __( 'Pending', 'eu-withdrawal-compliance' ),
+		'accepted'  => __( 'Accepted', 'eu-withdrawal-compliance' ),
+		'rejected'  => __( 'Rejected', 'eu-withdrawal-compliance' ),
+		'completed' => __( 'Completed', 'eu-withdrawal-compliance' ),
+	);
+
+	$label    = isset( $labels[ $status ] ) ? $labels[ $status ] : $labels['pending'];
+	$class    = 'ayudawp-euw-status-' . sanitize_html_class( $status );
+	$edit_url = get_edit_post_link( $cpt_id );
+
+	return sprintf(
+		'<a href="%1$s" class="ayudawp-euw-status %2$s">%3$s</a>',
+		esc_url( $edit_url ),
+		esc_attr( $class ),
+		esc_html( $label )
+	);
+}
