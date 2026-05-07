@@ -62,6 +62,13 @@ Funcionalidades válidas pero no prioritarias. Se reincorporan al roadmap cuando
 - **API REST mínima.** Nuevo `includes/functions-rest.php` con `register_rest_route('ayudawp/v1', '/withdrawal/(?P<id>\d+)')` para consultar estado. Útil para apps móviles, Zapier, n8n.
 - **Tests unitarios (PHPUnit + WP test suite).** Carpeta `/tests/`, `phpunit.xml.dist`, GitHub Actions workflow. Cubrir cálculo de plazo, sanitización del handler, honeypot y el hash del acuse.
 
+### Solicitudes de usuarios
+
+Funcionalidades pedidas por usuarios reales tras instalar el plugin. Mantenidas aquí hasta que se decida la versión de inclusión:
+
+- **Personalización del remitente de emails.** Settings con campos "From name" y "From address" para sobreescribir `wp_mail_from` y `wp_mail_from_name` con scope a los emails del plugin. Útil cuando la tienda quiere que los avisos lleguen como "Atención al cliente" en vez del remitente por defecto de WordPress.
+- **Personalización de colores de botones del formulario.** Settings con color picker para fondo y texto del botón de envío del shortcode `[ayudawp_withdrawal_form]`. Inyectar como CSS variables en `assets/css/frontend.css` para no usar `style=""` inline en el HTML del formulario.
+
 ---
 
 ## Pro 2.0 — Diferenciadores (futuro de pago)
