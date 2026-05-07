@@ -55,8 +55,14 @@ function ayudawp_euw_metabox_content( $post ) {
 
 	echo '<table class="ayudawp-euw-meta-table"><tbody>';
 
-	foreach ( $fields as $field ) {
+	foreach ( $fields as $key => $field ) {
 		$value = get_post_meta( $post->ID, $field['meta'], true );
+
+		if ( 'scope' === $key ) {
+			$value = ( 'partial' === $value )
+				? __( 'Partial', 'eu-withdrawal-compliance' )
+				: __( 'Full', 'eu-withdrawal-compliance' );
+		}
 
 		printf(
 			'<tr><th scope="row">%1$s</th><td>%2$s</td></tr>',

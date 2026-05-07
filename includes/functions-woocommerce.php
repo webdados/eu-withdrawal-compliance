@@ -14,7 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * and that the 14-day withdrawal window is still open.
  *
  * If WooCommerce is not active, the function returns valid by default
- * because we cannot check anything against an order database.
+ * because we cannot check anything against an order database. When WC is
+ * active, the order must exist and the email must match its billing email;
+ * sites that genuinely accept non-WC purchases can opt back into the
+ * lenient behaviour through the `ayudawp_euw_allow_unverified_order` filter.
  *
  * @param string $order_ref Order number or ID provided by the user.
  * @param string $email     Customer email.
@@ -40,11 +43,19 @@ function ayudawp_euw_validate_wc_order( $order_ref, $email ) {
 	$order_id = absint( $order_ref );
 	$order    = $order_id ? wc_get_order( $order_id ) : false;
 
-	// If we cannot match the order, we still let the request through
-	// because the consumer might be sending a request for a non-WC purchase
-	// (manual invoice, marketplace, etc.). Admin will review manually.
+	// If WooCommerce is active but we cannot match the order, fail validation.
+	// A filter allows opting back into the previous lenient behaviour for sites
+	// that genuinely accept non-WC purchases (manual invoices, marketplaces).
 	if ( ! $order ) {
-		return $default;
+		if ( apply_filters( 'ayudawp_euw_allow_unverified_order', false, $order_ref, $email ) ) {
+			return $default;
+		}
+
+		return array(
+			'valid'    => false,
+			'error'    => 'order',
+			'order_id' => 0,
+		);
 	}
 
 	// If we have a WC order, verify the email matches.
