@@ -215,8 +215,8 @@ La interpretación alemana de la directiva (la más estricta conocida hasta la f
 ### Registro de cambios
 
 **1.2.1**
-- Fix: valida que el pedido de WooCommerce exista cuando WC está activo. El fallback anterior aceptaba envíos cuyo número de pedido no coincidía con ningún pedido real de WC — pensado como vía de escape para compras fuera de WooCommerce — y permitía enviar desistimientos con números de pedido completamente inventados. Las tiendas que sí acepten compras no-WC pueden recuperar el comportamiento permisivo con el nuevo filtro `ayudawp_euw_allow_unverified_order`.
-- Fix: traduce el valor de Scope (Completo/Parcial) en la metabox de detalle del desistimiento. Antes mostraba el valor guardado en bruto en inglés incluso en sitios traducidos.
+- Corrección: valida que el pedido de WooCommerce exista cuando WC está activo. El fallback anterior aceptaba envíos cuyo número de pedido no coincidía con ningún pedido real de WC — pensado como vía de escape para compras fuera de WooCommerce — y permitía enviar desistimientos con números de pedido completamente inventados. Las tiendas que sí acepten compras no-WC pueden recuperar el comportamiento permisivo con el nuevo filtro `ayudawp_euw_allow_unverified_order`.
+- Corrección: traduce el valor del alcance (Completo/Parcial) en la metabox de detalle del desistimiento. Antes mostraba el valor guardado en bruto en inglés incluso en sitios traducidos.
 
 **1.2.0**
 - Exclusiones del Artículo 16: marca productos individuales o categorías enteras de WooCommerce como excluidos del derecho de desistimiento. Las subcategorías heredan automáticamente la exclusión de la categoría padre. Las solicitudes sobre pedidos con artículos excluidos se marcan para revisión manual (nunca se rechazan automáticamente), porque un desistimiento parcial sobre el resto del pedido puede seguir siendo válido.
