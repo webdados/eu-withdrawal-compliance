@@ -4,7 +4,7 @@ Tags: woocommerce, eu, gdpr, withdrawal, ecommerce
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -132,6 +132,10 @@ Actions:
 
 == Changelog ==
 
+= 1.2.1 =
+* Fix: validate that the WooCommerce order exists when WC is active. The previous fallback used to accept submissions whose order number could not be matched against a real WC order — intended as an escape hatch for non-WC purchases — which let users submit withdrawals with completely invented order numbers. Sites that genuinely accept non-WC purchases can opt back into the lenient behaviour with the new `ayudawp_euw_allow_unverified_order` filter.
+* Fix: translate the Scope value (Full/Partial) in the withdrawal detail metabox. It used to render the raw stored value in English even on translated sites.
+
 = 1.2.0 =
 * New: Article 16 exclusions. Mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Subcategories inherit the exclusion from the parent automatically. Withdrawal requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
 * New: instant-search picker for excluded categories in the settings page, with removable chips and instant auto-save.
@@ -155,6 +159,9 @@ Actions:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Validation fix: the form now correctly rejects submissions whose order number does not match a real WooCommerce order. Update strongly recommended.
 
 = 1.2.0 =
 Adds Article 16 exclusions (with hierarchical category inheritance and an instant-search picker), verifiable SHA-256 receipt hashes for proof of submission, and configurable deadline settings (basis + grace days) directly from the settings page.

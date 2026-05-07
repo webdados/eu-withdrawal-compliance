@@ -88,6 +88,10 @@ The German interpretation of the directive (the strictest known so far) requires
 
 ### Changelog
 
+**1.2.1**
+- Fix: validate that the WooCommerce order exists when WC is active. The previous fallback accepted submissions whose order number could not be matched against a real WC order — intended as an escape hatch for non-WC purchases — which let users submit withdrawals with completely invented order numbers. Sites that genuinely accept non-WC purchases can opt back into the lenient behaviour with the new `ayudawp_euw_allow_unverified_order` filter.
+- Fix: translate the Scope value (Full/Partial) in the withdrawal detail metabox. It used to render the raw stored value in English even on translated sites.
+
 **1.2.0**
 - Article 16 exclusions: mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Subcategories inherit the exclusion from the parent automatically. Requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
 - Instant-search picker for excluded categories in settings, with removable chips and instant auto-save (no need to hit "Save changes" for each chip).
@@ -209,6 +213,10 @@ Este plugin implementa la **versión mínima conforme** con la Directiva (UE) 20
 La interpretación alemana de la directiva (la más estricta conocida hasta la fecha) exige un flujo de doble confirmación: un primer botón que abre la función, una página intermedia con los datos del cliente y un segundo botón «confirmar desistimiento» que envía la solicitud. Aún no está implementado porque la transposición española sigue pendiente a 1 de mayo de 2026, y es probable que se necesite una actualización futura para alinear el plugin con el Real Decreto definitivo.
 
 ### Registro de cambios
+
+**1.2.1**
+- Fix: valida que el pedido de WooCommerce exista cuando WC está activo. El fallback anterior aceptaba envíos cuyo número de pedido no coincidía con ningún pedido real de WC — pensado como vía de escape para compras fuera de WooCommerce — y permitía enviar desistimientos con números de pedido completamente inventados. Las tiendas que sí acepten compras no-WC pueden recuperar el comportamiento permisivo con el nuevo filtro `ayudawp_euw_allow_unverified_order`.
+- Fix: traduce el valor de Scope (Completo/Parcial) en la metabox de detalle del desistimiento. Antes mostraba el valor guardado en bruto en inglés incluso en sitios traducidos.
 
 **1.2.0**
 - Exclusiones del Artículo 16: marca productos individuales o categorías enteras de WooCommerce como excluidos del derecho de desistimiento. Las subcategorías heredan automáticamente la exclusión de la categoría padre. Las solicitudes sobre pedidos con artículos excluidos se marcan para revisión manual (nunca se rechazan automáticamente), porque un desistimiento parcial sobre el resto del pedido puede seguir siendo válido.
