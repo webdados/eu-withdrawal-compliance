@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: EU Withdrawal Compliance 1.2.0\n"
 "Report-Msgid-Bugs-To: https://servicios.ayudawp.com\n"
 "POT-Creation-Date: 2026-05-06 12:33+0200\n"
-"PO-Revision-Date: 2026-05-06 12:00+0200\n"
+"PO-Revision-Date: 2026-05-07 23:57+0200\n"
 "Last-Translator: Fernando Tellado <fernando@tellado.es>\n"
 "Language-Team: Spanish (Spain) <https://ayudawp.com>\n"
 "Language: es_ES\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: eu-withdrawal-compliance\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: eu-withdrawal-compliance.php:83
 msgid "[Sample template — review with a legal advisor before publishing.]"
@@ -328,9 +328,9 @@ msgstr "Sobre la función de desistimiento de la UE"
 
 #: includes/functions-settings.php:218
 msgid ""
-"This plugin implements the digital withdrawal function required by <a href="
-"\"https://eur-lex.europa.eu/eli/dir/2023/2673/oj\" target=\"_blank\" rel="
-"\"noopener\">EU Directive 2023/2673</a>, applicable to all EU online "
+"This plugin implements the digital withdrawal function required by <a "
+"href=\"https://eur-lex.europa.eu/eli/dir/2023/2673/oj\" target=\"_blank\" "
+"rel=\"noopener\">EU Directive 2023/2673</a>, applicable to all EU online "
 "retailers from June 19, 2026."
 msgstr ""
 "Este plugin implementa la función digital de desistimiento que exige la <a "
@@ -340,397 +340,463 @@ msgstr ""
 
 #: includes/class-aeuw-promo-banner.php:54
 msgid "Complete WordPress security"
-msgstr ""
+msgstr "Seguridad WordPress completa"
 
 #: includes/class-aeuw-promo-banner.php:55
 msgid ""
 "All-in-one security plugin: firewall, login protection, security headers, "
 "2FA, file integrity monitoring, and activity logging."
 msgstr ""
+"Plugin de seguridad todo en uno: cortafuegos, modo bajo ataque, protección "
+"de inicio de sesión, cabeceras de seguridad, 2FA, monitorización de "
+"integridad de archivos y registro de actividad."
 
 #: includes/class-aeuw-promo-banner.php:56
 msgid "Install Vigilant"
-msgstr ""
+msgstr "Instalar Vigilante"
 
 #: includes/class-aeuw-promo-banner.php:60
 msgid "Restrict site access"
-msgstr ""
+msgstr "Restringe el acceso a tu sitio"
 
 #: includes/class-aeuw-promo-banner.php:61
 msgid ""
 "Force visitors to log in before accessing your site with extensive exception "
 "controls for pages, posts, and user roles."
 msgstr ""
+"Fuerza a los visitantes a iniciar sesión antes de poder acceder a tu sitio, "
+"con amplios controles de excepciones para páginas, entradas y perfiles de "
+"usuario."
 
 #: includes/class-aeuw-promo-banner.php:62
 msgid "Install Gozer"
-msgstr ""
+msgstr "Instalar Gozer"
 
 #: includes/class-aeuw-promo-banner.php:66
 msgid "Monitor AI crawler activity"
-msgstr ""
+msgstr "Monitoriza la actividad de rastreadores IA"
 
 #: includes/class-aeuw-promo-banner.php:67
 msgid ""
 "Track which AI bots visit your site, analyze their behavior, and take "
 "control with blocking rules and robots.txt management."
 msgstr ""
+"Controla qué bots de IA visitan ti web, analiza su comportamiento y toma el "
+"control con reglas de bloqueo y gestión de robots.txt."
 
 #: includes/class-aeuw-promo-banner.php:68
 msgid "Install VigIA"
-msgstr ""
+msgstr "Instalar VigIA"
 
 #: includes/class-aeuw-promo-banner.php:72
 msgid "Boost your AI presence"
-msgstr ""
+msgstr "Refuerza tu presencia en la IA"
 
 #: includes/class-aeuw-promo-banner.php:73
 msgid ""
 "Add social sharing and AI summarize buttons. Help visitors share your "
 "content and let AIs learn from your site while getting backlinks."
 msgstr ""
+"Añade botones para compartir en redes sociales y resumir con IA. Ayuda a los "
+"visitantes a compartir tu contenido y deja que las IA aprendan de tu sitio "
+"web mientras obtienes enlaces entrantes."
 
 #: includes/class-aeuw-promo-banner.php:74
 msgid "Install AI Share & Summarize"
-msgstr ""
+msgstr "Instalar AI Share & Summarize"
 
 #: includes/class-aeuw-promo-banner.php:78
 msgid "Control AI content usage"
-msgstr ""
+msgstr "Controla como la IA usa tu contenido"
 
 #: includes/class-aeuw-promo-banner.php:79
 msgid ""
 "Cloudflare-endorsed plugin to define how AI systems can use your content: "
 "for training, search results, or both."
 msgstr ""
+"Plugin avalado por Cloudflare para definir cómo los sistemas de IA pueden "
+"utilizar tu contenido: para entrenamiento, resultados de búsqueda o ambos."
 
 #: includes/class-aeuw-promo-banner.php:80
 msgid "Install AI Content Signals"
-msgstr ""
+msgstr "Instalar AI Content Signals"
 
 #: includes/class-aeuw-promo-banner.php:84
 msgid "Speed up your WordPress"
-msgstr ""
+msgstr "Acelera tu WordPress"
 
 #: includes/class-aeuw-promo-banner.php:85
 msgid ""
 "Comprehensive performance optimizations: critical CSS, lazy loading, cache "
 "rules, and 30+ tweaks with zero configuration."
 msgstr ""
+"Optimizaciones integrales de rendimiento: CSS crítico, carga diferida, "
+"reglas de caché y más de 30 ajustes sin necesidad de configuración."
 
 #: includes/class-aeuw-promo-banner.php:86
 msgid "Install Zero Config Performance"
-msgstr ""
+msgstr "Instalar Zero Config Performance"
 
 #: includes/class-aeuw-promo-banner.php:90
 msgid "Back to Classic Editor"
-msgstr ""
+msgstr "Vuelve al editor clásico"
 
 #: includes/class-aeuw-promo-banner.php:91
 msgid ""
 "Completely remove Gutenberg, FSE styles, and block widgets. Restore the "
 "classic editing experience with better performance."
 msgstr ""
+"Elimina por completo Gutenberg, los estilos FSE y los widgets de bloques. "
+"Recupera la experiencia de edición clásica con un mejor rendimiento."
 
 #: includes/class-aeuw-promo-banner.php:92
 msgid "Install No Gutenberg"
-msgstr ""
+msgstr "Instalar No Gutenberg"
 
 #: includes/class-aeuw-promo-banner.php:96
 msgid "Development toolkit"
-msgstr ""
+msgstr "Kit de herramientas para desarrollo"
 
 #: includes/class-aeuw-promo-banner.php:97
 msgid ""
 "Bypass all caching during development. Auto-detects cache plugins, enables "
 "debug mode, and includes maintenance screen."
 msgstr ""
+"Desactiva todas la cachés mientas desarrollas. Detecta automáticamente los "
+"plugins de caché, activa el modo de debug e incluye una pantalla de "
+"mantenimiento."
 
 #: includes/class-aeuw-promo-banner.php:98
 msgid "Install Anti-Cache Kit"
-msgstr ""
+msgstr "Instalar Kit Anti-Caché"
 
 #: includes/class-aeuw-promo-banner.php:102
 msgid "Fix customer names"
-msgstr ""
+msgstr "Arregla los nombres de clientes"
 
 #: includes/class-aeuw-promo-banner.php:103
 msgid ""
 "Auto-capitalize names and addresses in WordPress and WooCommerce. Keep "
 "invoices and reports professionally formatted."
 msgstr ""
+"Capitaliza automáticamente nombres y direcciones en WordPress y WooCommerce. "
+"Mantén las facturas y los informes con un formato profesional."
 
 #: includes/class-aeuw-promo-banner.php:104
 msgid "Install Auto Capitalize"
-msgstr ""
+msgstr "Instalar Auto Capitalize"
 
 #: includes/class-aeuw-promo-banner.php:108
 msgid "Clean Action Scheduler"
-msgstr ""
+msgstr "Limpia el programador de acciones"
 
 #: includes/class-aeuw-promo-banner.php:109
 msgid ""
 "Remove millions of completed, failed, and old actions from WooCommerce "
 "Action Scheduler. Reduce database size instantly."
 msgstr ""
+"Elimina millones de acciones completadas, fallidas y antiguas del "
+"programador de acciones de WooCommerce. Reduce el tamaño de la base de datos "
+"al instante."
 
 #: includes/class-aeuw-promo-banner.php:110
 msgid "Install Scheduler Cleaner"
-msgstr ""
+msgstr "Instalar Scheduler Cleaner"
 
 #: includes/class-aeuw-promo-banner.php:114
 msgid "Customize your sitemap"
-msgstr ""
+msgstr "Personaliza tu mapa del sitio"
 
 #: includes/class-aeuw-promo-banner.php:115
 msgid ""
 "Control WordPress native sitemap: exclude post types, taxonomies, specific "
 "posts, and authors. No bloat, just options."
 msgstr ""
+"Controla el mapa del sitio nativo de WordPress: excluye tipos de contenido, "
+"taxonomías, publicaciones específicas y autores. Sin extras innecesarios, "
+"solo opciones."
 
 #: includes/class-aeuw-promo-banner.php:116
 msgid "Install Sitemap Customizer"
-msgstr ""
+msgstr "Instalar Sitemap Customizer"
 
 #: includes/class-aeuw-promo-banner.php:120
 msgid "Control post visibility"
-msgstr ""
+msgstr "Visibilidad de publicaciones"
 
 #: includes/class-aeuw-promo-banner.php:121
 msgid ""
 "Hide posts from homepage, archives, feeds, or REST API while keeping them "
 "accessible via direct URL."
 msgstr ""
+"Oculta publicaciones de la página de inicio, archivos, feeds o API REST, "
+"manteniendo el acceso a ellas a través de la URL directa."
 
 #: includes/class-aeuw-promo-banner.php:122
 msgid "Install Post Visibility"
-msgstr ""
+msgstr "Instalar Post Visibility"
 
 #: includes/class-aeuw-promo-banner.php:126
 msgid "Smart widget display"
-msgstr ""
+msgstr "Visualización inteligente de widgets"
 
 #: includes/class-aeuw-promo-banner.php:127
 msgid ""
 "Show or hide widgets based on pages, post types, categories, user roles, and "
 "more. Works with any theme."
 msgstr ""
+"Muestra u oculta widgets según las páginas, los tipos de contenido, las "
+"categorías, los perfiles de usuario y mucho más. Funciona con cualquier tema."
 
 #: includes/class-aeuw-promo-banner.php:128
 msgid "Install Widget Visibility"
-msgstr ""
+msgstr "Instalar Widget Visibility"
 
 #: includes/class-aeuw-promo-banner.php:132
 msgid "Search & replace in blocks"
-msgstr ""
+msgstr "Busca y reemplaza en bloques"
 
 #: includes/class-aeuw-promo-banner.php:133
 msgid ""
 "Find and replace text across all your Gutenberg blocks. Bulk edit content "
 "without touching the database directly."
 msgstr ""
+"Busca y reemplaza texto en todos tus bloques Gutenberg. Edita contenidos en "
+"lotes sin tocar directamente la base de datos."
 
 #: includes/class-aeuw-promo-banner.php:134
 msgid "Install Search Replace Blocks"
-msgstr ""
+msgstr "Instalar Search Replace Blocks"
 
 #: includes/class-aeuw-promo-banner.php:138
 msgid "Better read more links"
-msgstr ""
+msgstr "Mejores enlaces de leer más"
 
 #: includes/class-aeuw-promo-banner.php:139
 msgid ""
 "Customize excerpt \"read more\" links with buttons, custom text, and "
 "nofollow option. Improve CTR and SEO."
 msgstr ""
+"Personaliza los enlaces «Leer más» de los extractos con botones, texto "
+"personalizado y opción nofollow. Mejora el CTR y el SEO."
 
 #: includes/class-aeuw-promo-banner.php:140
 msgid "Install SEO Read More"
-msgstr ""
+msgstr "Instalar SEO Read More"
 
 #: includes/class-aeuw-promo-banner.php:144
 msgid "Cleaner variable prices"
-msgstr ""
+msgstr "Precios variables más claros"
 
 #: includes/class-aeuw-promo-banner.php:145
 msgid ""
 "Display only the lowest price for WooCommerce variable products instead of "
 "confusing price ranges."
 msgstr ""
+"Muestra solo el precio más bajo para los productos variables de WooCommerce "
+"en lugar de rangos de precios confusos."
 
 #: includes/class-aeuw-promo-banner.php:146
 msgid "Install Lowest Price"
-msgstr ""
+msgstr "Instalar Lowest Price"
 
 #: includes/class-aeuw-promo-banner.php:150
 msgid "Schedule sale prices"
-msgstr ""
+msgstr "Programa precios de oferta"
 
 #: includes/class-aeuw-promo-banner.php:151
 msgid ""
 "Set multiple future sale prices for WooCommerce products. Plan promotions in "
 "advance with start and end dates."
 msgstr ""
+"Configura múltiples precios de venta futuros para productos de WooCommerce. "
+"Planifica promociones con antelación con fechas de inicio y finalización."
 
 #: includes/class-aeuw-promo-banner.php:152
 msgid "Install Sale Scheduler"
-msgstr ""
+msgstr "Instalar Sale Scheduler"
 
 #: includes/class-aeuw-promo-banner.php:156
 msgid "Simplify store management"
-msgstr ""
+msgstr "Simplifica la gestión de tu tienda"
 
 #: includes/class-aeuw-promo-banner.php:157
 msgid ""
 "Clean up WordPress admin for Store Managers. Hide unnecessary menus, keep "
 "only orders, products, and customers, plus quick access shortcuts."
 msgstr ""
+"Optimiza la administración de WordPress para los gestores de tienda. Oculta "
+"menús innecesarios, deja solo pedidos, productos y clientes, además de "
+"enlaces directos de acceso rápido."
 
 #: includes/class-aeuw-promo-banner.php:158
 msgid "Install Easy Store"
-msgstr ""
+msgstr "Instalar Easy Store"
 
 #: includes/class-aeuw-promo-banner.php:162
 msgid "Lightbox for Divi"
-msgstr ""
+msgstr "Caja de luz para Divi"
 
 #: includes/class-aeuw-promo-banner.php:163
 msgid ""
 "Add native lightbox functionality to Divi theme images. No jQuery, fast "
 "loading, fully customizable."
 msgstr ""
+"Añade la funcionalidad nativa de caja de luz a las imágenes del tema Divi. "
+"Sin jQuery, carga rápida, totalmente personalizable."
 
 #: includes/class-aeuw-promo-banner.php:164
 msgid "Install Divi Lightbox"
-msgstr ""
+msgstr "Instalar Divi Lightbox"
 
 #: includes/class-aeuw-promo-banner.php:168
 msgid "Show visitors what is coming up next"
-msgstr ""
+msgstr "Muestra a los visitantes lo que se publicará próximamente"
 
 #: includes/class-aeuw-promo-banner.php:169
 msgid ""
 "Display your scheduled and future posts on the frontend to gain and retain "
 "visits."
 msgstr ""
+"Muestra tus entradas programadas y futuras en la parte visible de la web "
+"para conseguir y retener visitas."
 
 #: includes/class-aeuw-promo-banner.php:170
 msgid "Install Scheduled Posts Showcase"
-msgstr ""
+msgstr "Instalar entradas programadas"
 
 #: includes/class-aeuw-promo-banner.php:174
 msgid "Custom Dashboard News"
-msgstr ""
+msgstr "Noticas personalizadas en el escritorio"
 
 #: includes/class-aeuw-promo-banner.php:175
 msgid ""
 "Add your own custom feeds and links to the news and events dashboard widget "
 "and replace WordPress default one."
 msgstr ""
+"Añade tus propios feeds personalizados y enlaces al widget de escritorio de "
+"noticias y eventos, y reemplaza el que viene por defecto con WordPress."
 
 #: includes/class-aeuw-promo-banner.php:176
 msgid "Install Periscope"
-msgstr ""
+msgstr "Instalar Periscopio"
 
 #: includes/class-aeuw-promo-banner.php:180
 msgid "Control search indexing"
-msgstr ""
+msgstr "Controla el indexado en los motores de búsqueda"
 
 #: includes/class-aeuw-promo-banner.php:181
 msgid ""
 "Tell search engines what not to index. Apply noindex per post, page, or "
 "entire post types with simple override controls."
 msgstr ""
+"Di a los motores de búsqueda qué no indexar. Aplica «noindex» por entrada, "
+"página o a tipos de contenido completos con omisión individual."
 
 #: includes/class-aeuw-promo-banner.php:182
 msgid "Install NoIndexer"
-msgstr ""
+msgstr "Instalar NoIndexer"
 
 #: includes/class-aeuw-promo-banner.php:186
 msgid "Reduce WordPress Fat"
-msgstr ""
+msgstr "Reduce la grasa de WordPress"
 
 #: includes/class-aeuw-promo-banner.php:187
 msgid ""
 "Put your WordPress on a diet. Disable unnecessary default features to "
 "improve performance and reduce bloat."
 msgstr ""
+"Pon tu WordPress a dieta. Desactiva características por defecto que sean "
+"innecesarias para mejorar el rendimiento y reducir sobrecargas."
 
 #: includes/class-aeuw-promo-banner.php:188
 msgid "Install DietPress"
-msgstr ""
+msgstr "Instala DietPress"
 
 #: includes/class-aeuw-promo-banner.php:202
 msgid "Need help with your website?"
-msgstr ""
+msgstr "¿Necesitas ayuda con tu web?"
 
 #: includes/class-aeuw-promo-banner.php:203
 msgid ""
 "Professional WordPress maintenance: security monitoring, regular backups, "
 "performance optimization, and priority support."
 msgstr ""
+"Mantenimiento WordPress profesional: monitorización de seguridad, backups "
+"periódicos, optimización del rendimiento y soporte preferente."
 
 #: includes/class-aeuw-promo-banner.php:204
 #: includes/class-aeuw-promo-banner.php:232
 msgid "Learn more"
-msgstr ""
+msgstr "Más información"
 
 #: includes/class-aeuw-promo-banner.php:209
 msgid "WordPress consultancy"
-msgstr ""
+msgstr "Consultoría WordPress"
 
 #: includes/class-aeuw-promo-banner.php:210
 msgid ""
 "One-on-one online sessions to solve your WordPress doubts, get expert "
 "advice, and make better decisions for your project."
 msgstr ""
+"Sesiones online personalizadas para resolver tus dudas sobre WordPress, "
+"obtener asesoramiento experto y tomar las mejores decisiones para tu "
+"proyecto."
 
 #: includes/class-aeuw-promo-banner.php:211
 msgid "Book a session"
-msgstr ""
+msgstr "Reserva una sesión"
 
 #: includes/class-aeuw-promo-banner.php:216
 msgid "Hacked website?"
-msgstr ""
+msgstr "¿Han hackeado tu web?"
 
 #: includes/class-aeuw-promo-banner.php:217
 msgid ""
 "Fast recovery service for compromised WordPress sites. We clean malware, fix "
 "vulnerabilities, and restore your site security."
 msgstr ""
+"Servicio rápido de recuperación de sitios WordPress comprometidos. Limpiamos "
+"malware, corregimos vulnerabilidades restauramos la seguridad de tu sitio."
 
 #: includes/class-aeuw-promo-banner.php:218
 msgid "Get help now"
-msgstr ""
+msgstr "Consigue ayuda ya"
 
 #: includes/class-aeuw-promo-banner.php:223
 msgid "Custom development"
-msgstr ""
+msgstr "Desarrollo personalizado"
 
 #: includes/class-aeuw-promo-banner.php:224
 msgid ""
 "Need a custom plugin, theme modifications, or specific functionality? We "
 "build tailored WordPress solutions for your needs."
 msgstr ""
+"¿Necesitas un plugin personalizado, modificaciones en un tema o una "
+"funcionalidad específica? Creamos soluciones WordPress a medida de tus "
+"necesidades."
 
 #: includes/class-aeuw-promo-banner.php:225
 msgid "Request a quote"
-msgstr ""
+msgstr "Solicita un presupuesto"
 
 #: includes/class-aeuw-promo-banner.php:230
 msgid "Hosting built for WordPress"
-msgstr ""
+msgstr "Alojamiento web creado para WordPress"
 
 #: includes/class-aeuw-promo-banner.php:231
 msgid ""
 "Google Cloud servers, automatic geo-located daily backups, and 24/7 expert "
 "support. Speed, security, and migration tools included."
 msgstr ""
+"Servidores de Google Cloud, copias de seguridad diarias automáticas con "
+"geolocalización y soporte técnico especializado 24/7. Velocidad, seguridad y "
+"herramientas de migración incluidas."
 
 #. translators: SiteGround affiliate URL. Change this URL in translations to use a localized landing page.
 #: includes/class-aeuw-promo-banner.php:234
 msgid "https://stgrnd.co/telladowpbox"
-msgstr ""
+msgstr "https://www.siteground.es/go/ayudawp"
 
 #: includes/class-aeuw-promo-banner.php:300
 msgid "Starter kit for your site"
@@ -798,11 +864,11 @@ msgstr ""
 #: includes/functions-form.php:127
 #, php-format
 msgid ""
-"I have read and accept the <a href=\"%s\" target=\"_blank\" rel=\"noopener"
-"\">privacy policy</a>."
+"I have read and accept the <a href=\"%s\" target=\"_blank\" "
+"rel=\"noopener\">privacy policy</a>."
 msgstr ""
-"He leído y acepto la <a href=\"%s\" target=\"_blank\" rel=\"noopener"
-"\">política de privacidad</a>."
+"He leído y acepto la <a href=\"%s\" target=\"_blank\" "
+"rel=\"noopener\">política de privacidad</a>."
 
 #: includes/functions-form.php:139
 msgid "I confirm that the information provided is correct."
@@ -1080,7 +1146,6 @@ msgid "Order %1$s — %2$s"
 msgstr "Pedido %1$s — %2$s"
 
 # --- v1.2.0 strings ---
-
 #: includes/admin/metaboxes.php:54
 msgid "Submitted at (UTC)"
 msgstr "Enviada el (UTC)"
@@ -1106,11 +1171,9 @@ msgstr ""
 "siendo válido."
 
 #: includes/functions-emails.php
-msgid ""
-"Receipt verification code (keep this email as proof of submission):"
+msgid "Receipt verification code (keep this email as proof of submission):"
 msgstr ""
-"Código de verificación del acuse (conserva este correo como prueba de "
-"envío):"
+"Código de verificación del acuse (conserva este correo como prueba de envío):"
 
 #: includes/functions-emails.php
 msgid ""
@@ -1122,8 +1185,8 @@ msgstr ""
 
 #: includes/functions-emails.php
 msgid ""
-"Review manually before accepting or rejecting. A partial withdrawal over "
-"non-excluded items may still be valid."
+"Review manually before accepting or rejecting. A partial withdrawal over non-"
+"excluded items may still be valid."
 msgstr ""
 "Revísalo manualmente antes de aceptar o rechazar. Un desistimiento parcial "
 "sobre los artículos no excluidos puede seguir siendo válido."
@@ -1155,16 +1218,15 @@ msgid "Order date (when the customer placed the order)"
 msgstr "Fecha del pedido (cuando el cliente hizo el pedido)"
 
 #: includes/functions-settings.php
-msgid ""
-"Completion date (when the WooCommerce order was marked as completed)"
+msgid "Completion date (when the WooCommerce order was marked as completed)"
 msgstr ""
 "Fecha de completado (cuando se marcó el pedido como completado en "
 "WooCommerce)"
 
 #: includes/functions-settings.php
 msgid ""
-"If you choose Completion date but the order is not yet completed, the "
-"plugin falls back to the order date."
+"If you choose Completion date but the order is not yet completed, the plugin "
+"falls back to the order date."
 msgstr ""
 "Si eliges Fecha de completado pero el pedido aún no está completado, el "
 "plugin recurre a la fecha del pedido."
@@ -1175,8 +1237,8 @@ msgstr "días"
 
 #: includes/functions-settings.php
 msgid ""
-"Extra days added on top of the 14-day legal minimum. Useful when you offer "
-"a longer return window than required."
+"Extra days added on top of the 14-day legal minimum. Useful when you offer a "
+"longer return window than required."
 msgstr ""
 "Días adicionales que se suman al mínimo legal de 14. Útil si ofreces un "
 "periodo de devolución más amplio del que exige la ley."
@@ -1196,16 +1258,16 @@ msgid ""
 "manual review — never auto-rejected, since a partial withdrawal over the "
 "rest of the order can still be valid."
 msgstr ""
-"El artículo 16 de la Directiva (UE) 2011/83 enumera las categorías de "
-"bienes exentas del derecho de desistimiento: productos personalizados, "
-"perecederos, contenidos digitales precintados abiertos por el consumidor, "
-"productos precintados por motivos de higiene, etc. Selecciona las "
-"categorías de WooCommerce que encajen con esas excepciones, o marca "
-"productos concretos en el editor de producto bajo «Excluido del derecho de "
-"desistimiento». Las solicitudes de desistimiento sobre pedidos con "
-"artículos excluidos quedan marcadas para revisión manual — nunca se "
-"rechazan de manera automática, ya que un desistimiento parcial sobre el "
-"resto del pedido puede seguir siendo válido."
+"El artículo 16 de la Directiva (UE) 2011/83 enumera las categorías de bienes "
+"exentas del derecho de desistimiento: productos personalizados, perecederos, "
+"contenidos digitales precintados abiertos por el consumidor, productos "
+"precintados por motivos de higiene, etc. Selecciona las categorías de "
+"WooCommerce que encajen con esas excepciones, o marca productos concretos en "
+"el editor de producto bajo «Excluido del derecho de desistimiento». Las "
+"solicitudes de desistimiento sobre pedidos con artículos excluidos quedan "
+"marcadas para revisión manual — nunca se rechazan de manera automática, ya "
+"que un desistimiento parcial sobre el resto del pedido puede seguir siendo "
+"válido."
 
 #: includes/functions-settings.php
 msgid "Excluded product categories"
@@ -1213,11 +1275,9 @@ msgstr "Categorías de producto excluidas"
 
 #: includes/functions-settings.php
 msgid ""
-"WooCommerce is not active, so there are no product categories to choose "
-"from."
+"WooCommerce is not active, so there are no product categories to choose from."
 msgstr ""
-"WooCommerce no está activo, así que no hay categorías de producto que "
-"elegir."
+"WooCommerce no está activo, así que no hay categorías de producto que elegir."
 
 #: includes/functions-settings.php
 msgid "Search categories to exclude…"
@@ -1225,16 +1285,15 @@ msgstr "Buscar categorías a excluir…"
 
 #: includes/functions-settings.php
 msgid ""
-"Type to search a product category and click it to add. Subcategories "
-"inherit the exclusion automatically. Changes are saved instantly."
+"Type to search a product category and click it to add. Subcategories inherit "
+"the exclusion automatically. Changes are saved instantly."
 msgstr ""
 "Escribe para buscar una categoría de producto y haz clic en ella para "
 "añadirla. Las subcategorías heredan la exclusión automáticamente. Los "
 "cambios se guardan al instante."
 
 #. translators: %s: category name.
-#: includes/functions-exclusions.php
-#: includes/functions-settings.php
+#: includes/functions-exclusions.php includes/functions-settings.php
 #, php-format
 msgid "Remove %s from exclusions"
 msgstr "Quitar %s de las exclusiones"
@@ -1245,12 +1304,12 @@ msgstr "Excluido del derecho de desistimiento"
 
 #: includes/functions-exclusions.php
 msgid ""
-"Tick this box if the product falls under one of the Article 16 exceptions "
-"of EU Directive 2011/83 (custom-made, perishable, sealed digital content "
-"opened by the consumer, etc.)."
+"Tick this box if the product falls under one of the Article 16 exceptions of "
+"EU Directive 2011/83 (custom-made, perishable, sealed digital content opened "
+"by the consumer, etc.)."
 msgstr ""
-"Marca esta casilla si el producto está entre las excepciones del artículo "
-"16 de la Directiva (UE) 2011/83 (productos personalizados, perecederos, "
+"Marca esta casilla si el producto está entre las excepciones del artículo 16 "
+"de la Directiva (UE) 2011/83 (productos personalizados, perecederos, "
 "contenidos digitales precintados que el consumidor haya abierto, etc.)."
 
 #. translators: %s: parent category name.
