@@ -60,9 +60,12 @@ function ayudawp_euw_inject_email_notice( $order, $sent_to_admin, $plain_text, $
 
 	$page_url = get_permalink( $page_id );
 
-	// Append order_id so the form can be pre-filled.
-	if ( $order && method_exists( $order, 'get_id' ) ) {
-		$page_url = add_query_arg( 'order_id', $order->get_id(), $page_url );
+	// Append order_id so the form can be pre-filled. Use the displayed order
+	// number when available (Sequential Order Numbers and similar plugins) so
+	// the customer sees in the form the same reference shown in their receipt.
+	if ( $order ) {
+		$order_ref = method_exists( $order, 'get_order_number' ) ? $order->get_order_number() : $order->get_id();
+		$page_url  = add_query_arg( 'order_id', $order_ref, $page_url );
 	}
 
 	if ( $plain_text ) {

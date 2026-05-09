@@ -88,6 +88,11 @@ The German interpretation of the directive (the strictest known so far) requires
 
 ### Changelog
 
+**1.2.2**
+- Fix: the form now resolves the order by its displayed number, not just by the internal post ID. Compatible with WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) and any plugin that stores the customer-facing number in the standard `_order_number` post meta.
+- The "Withdraw" button on the WooCommerce **My Account → Orders** screen and the link injected into WooCommerce transactional emails now pre-fill the form with the same order number the customer sees in their receipt.
+- New filter `ayudawp_euw_pre_resolve_wc_order` to short-circuit the resolver for plugins with non-meta numbering schemes (e.g. YITH Sequential Order Number) and `ayudawp_euw_resolve_wc_order` for late override or auditing.
+
 **1.2.1**
 - Fix: validate that the WooCommerce order exists when WC is active. The previous fallback accepted submissions whose order number could not be matched against a real WC order — intended as an escape hatch for non-WC purchases — which let users submit withdrawals with completely invented order numbers. Sites that genuinely accept non-WC purchases can opt back into the lenient behaviour with the new `ayudawp_euw_allow_unverified_order` filter.
 - Fix: translate the Scope value (Full/Partial) in the withdrawal detail metabox. It used to render the raw stored value in English even on translated sites.
@@ -213,6 +218,11 @@ Este plugin implementa la **versión mínima conforme** con la Directiva (UE) 20
 La interpretación alemana de la directiva (la más estricta conocida hasta la fecha) exige un flujo de doble confirmación: un primer botón que abre la función, una página intermedia con los datos del cliente y un segundo botón «confirmar desistimiento» que envía la solicitud. Aún no está implementado porque la transposición española sigue pendiente a 1 de mayo de 2026, y es probable que se necesite una actualización futura para alinear el plugin con el Real Decreto definitivo.
 
 ### Registro de cambios
+
+**1.2.2**
+- Corrección: el formulario ahora localiza el pedido por su número visible, no solo por el ID interno del post. Compatible con WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) y cualquier plugin que guarde el número que ve el cliente en la meta estándar `_order_number`.
+- El botón «Desistir» de **Mi cuenta → Pedidos** y el enlace que se añade a los correos transaccionales de WooCommerce ahora prerellenan el formulario con el mismo número de pedido que el cliente ve en su recibo.
+- Nuevo filtro `ayudawp_euw_pre_resolve_wc_order` para hacer cortocircuito en el resolver con plugins que usan esquemas de numeración fuera de la meta estándar (por ejemplo YITH Sequential Order Number) y `ayudawp_euw_resolve_wc_order` para sobrescribir o auditar el resultado final.
 
 **1.2.1**
 - Corrección: valida que el pedido de WooCommerce exista cuando WC está activo. El fallback anterior aceptaba envíos cuyo número de pedido no coincidía con ningún pedido real de WC — pensado como vía de escape para compras fuera de WooCommerce — y permitía enviar desistimientos con números de pedido completamente inventados. Las tiendas que sí acepten compras no-WC pueden recuperar el comportamiento permisivo con el nuevo filtro `ayudawp_euw_allow_unverified_order`.

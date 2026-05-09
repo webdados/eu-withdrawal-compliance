@@ -10,6 +10,103 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Resolve the user-supplied order reference to a WC_Order instance.
+ *
+ * Accepts both the WordPress internal order ID (when no numbering plugin is
+ * active) and the displayed order number stored by plugins such as
+ * "WooCommerce Sequential Order Numbers" (free + Pro) or "Custom Order Numbers
+ * for WooCommerce" (WPFactory) in the standard `_order_number` post meta.
+ *
+ * Resolution strategies, in order of specificity:
+ *   1. `ayudawp_euw_pre_resolve_wc_order` filter — short-circuit hook for
+ *      plugins with non-meta numbering schemes (e.g. YITH Sequential Order
+ *      Number, custom ERP integrations).
+ *   2. Lookup by `_order_number` meta — covers the de-facto standard used by
+ *      the most popular numbering plugins.
+ *   3. Literal ID lookup with strict cross-check against `get_order_number()`
+ *      — only accepts when the displayed number matches what the customer
+ *      typed. Prevents access by guessing internal IDs in stores that use
+ *      custom numbering.
+ *
+ * The resolved order (or false) is finally passed through the
+ * `ayudawp_euw_resolve_wc_order` filter for late override / auditing.
+ *
+ * @param string $order_ref Raw order reference as typed by the customer.
+ * @return WC_Order|false WC_Order instance, or false when no match was found.
+ */
+function ayudawp_euw_resolve_wc_order( $order_ref ) {
+
+	$order_ref = is_scalar( $order_ref ) ? trim( (string) $order_ref ) : '';
+
+	if ( '' === $order_ref || ! function_exists( 'wc_get_order' ) ) {
+		return false;
+	}
+
+	/**
+	 * Filter the resolution result before built-in strategies run.
+	 *
+	 * Return a WC_Order instance to short-circuit. Return false to reject
+	 * explicitly. Return null (default) to let the built-in strategies run.
+	 *
+	 * @param WC_Order|false|null $pre       Pre-resolved order, or null to fall through.
+	 * @param string              $order_ref Raw order reference typed by the customer.
+	 */
+	$pre = apply_filters( 'ayudawp_euw_pre_resolve_wc_order', null, $order_ref );
+
+	if ( $pre instanceof WC_Order ) {
+		return $pre;
+	}
+
+	if ( false === $pre ) {
+		return false;
+	}
+
+	$order = false;
+
+	// Strategy 1 — meta `_order_number` lookup. HPOS/CPT agnostic via wc_get_orders().
+	if ( function_exists( 'wc_get_orders' ) ) {
+		$matches = wc_get_orders(
+			array(
+				'limit'      => 1,
+				'meta_key'   => '_order_number', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value' => $order_ref,      // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+				'orderby'    => 'date',
+				'order'      => 'DESC',
+				'return'     => 'ids',
+				'status'     => array_keys( wc_get_order_statuses() ),
+			)
+		);
+
+		if ( ! empty( $matches ) ) {
+			$order = wc_get_order( (int) $matches[0] );
+		}
+	}
+
+	// Strategy 2 — literal ID with strict displayed-number cross-check.
+	if ( ! $order && ctype_digit( $order_ref ) ) {
+		$candidate = wc_get_order( absint( $order_ref ) );
+
+		if ( $candidate ) {
+			$displayed = method_exists( $candidate, 'get_order_number' )
+				? (string) $candidate->get_order_number()
+				: (string) $candidate->get_id();
+
+			if ( trim( $displayed ) === $order_ref ) {
+				$order = $candidate;
+			}
+		}
+	}
+
+	/**
+	 * Filter the final resolution result.
+	 *
+	 * @param WC_Order|false $order     Resolved order or false.
+	 * @param string         $order_ref Raw order reference typed by the customer.
+	 */
+	return apply_filters( 'ayudawp_euw_resolve_wc_order', $order, $order_ref );
+}
+
+/**
  * Validate that a given order/email pair belongs to a real WC order
  * and that the 14-day withdrawal window is still open.
  *
@@ -40,8 +137,7 @@ function ayudawp_euw_validate_wc_order( $order_ref, $email ) {
 		return $default;
 	}
 
-	$order_id = absint( $order_ref );
-	$order    = $order_id ? wc_get_order( $order_id ) : false;
+	$order = ayudawp_euw_resolve_wc_order( $order_ref );
 
 	// If WooCommerce is active but we cannot match the order, fail validation.
 	// A filter allows opting back into the previous lenient behaviour for sites
@@ -300,7 +396,8 @@ function ayudawp_euw_add_order_action( $actions, $order ) {
 	}
 
 	$endpoint_url = wc_get_account_endpoint_url( 'withdrawal' );
-	$endpoint_url = add_query_arg( 'order_id', $order->get_id(), $endpoint_url );
+	$order_ref    = method_exists( $order, 'get_order_number' ) ? $order->get_order_number() : $order->get_id();
+	$endpoint_url = add_query_arg( 'order_id', $order_ref, $endpoint_url );
 
 	$actions['ayudawp_euw'] = array(
 		'url'  => $endpoint_url,
@@ -324,7 +421,7 @@ function ayudawp_euw_prefill_from_query( $atts ) {
 	// nonce-verified in functions-handler.php.
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['order_id'] ) ) {
-		$atts['order_id'] = absint( wp_unslash( $_GET['order_id'] ) );
+		$atts['order_id'] = sanitize_text_field( wp_unslash( $_GET['order_id'] ) );
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 

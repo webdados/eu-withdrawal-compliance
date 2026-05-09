@@ -4,7 +4,7 @@ Tags: woocommerce, eu, compliance, withdrawal, woocommerce, desistimiento
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -83,6 +83,10 @@ Each request is saved as a private custom post type entry called `ayudawp_withdr
 
 Yes. The plugin declares HPOS compatibility on load.
 
+= Does it work with plugins that change the WooCommerce order number (Sequential Order Numbers, Custom Order Numbers, etc.)? =
+
+Yes. The form accepts both the internal WooCommerce order ID and the displayed order number. The resolver looks up the customer-facing number in the standard `_order_number` post meta, which covers WooCommerce Sequential Order Numbers (free and Pro), Custom Order Numbers for WooCommerce (WPFactory) and any plugin that follows the same convention. For plugins that store the number elsewhere or compute it on the fly (e.g. YITH Sequential Order Number, custom integrations), use the `ayudawp_euw_pre_resolve_wc_order` filter to provide your own resolver.
+
 = Will the notice appear on every WooCommerce email? =
 
 No. By default the notice is only added to the customer-facing emails sent during the withdrawal window: order processing, on-hold and completed. Admin emails never receive the notice. You can change the list of emails using the `ayudawp_euw_email_ids` filter.
@@ -110,6 +114,9 @@ Filters:
 * `ayudawp_euw_grace_days` — extra days added to the 14-day deadline. The default is the value stored in settings; the filter receives that value, so returning `$days + N` adds on top of it.
 * `ayudawp_euw_skip_deadline_check` — return `true` to disable the deadline check entirely. Receives the WC_Order as second argument.
 * `ayudawp_euw_email_ids` — array of WooCommerce email IDs where the withdrawal notice is injected.
+* `ayudawp_euw_allow_unverified_order` — return `true` to accept submissions whose order number cannot be matched against a real WooCommerce order. Useful for sites that also handle non-WC purchases.
+* `ayudawp_euw_pre_resolve_wc_order` — short-circuit the order resolver. Return a `WC_Order` instance to accept, `false` to reject, or `null` (default) to fall through to the built-in strategies. Useful for plugins that store the displayed order number outside the standard `_order_number` post meta (e.g. YITH Sequential Order Number, custom ERP integrations).
+* `ayudawp_euw_resolve_wc_order` — late filter that receives the resolved `WC_Order` (or `false`) and the raw reference, for auditing or last-chance overrides.
 
 Actions:
 
@@ -131,6 +138,11 @@ Actions:
 4. WooCommerce My Account integration with per-order Withdraw button.
 
 == Changelog ==
+
+= 1.2.2 =
+* Fix: the form now resolves the order by its displayed number, not just by the internal post ID. Compatible with WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) and any plugin that stores the customer-facing number in the standard `_order_number` post meta.
+* Improvement: the "Withdraw" button on the WooCommerce **My Account → Orders** screen and the link injected into WooCommerce transactional emails now pre-fill the form with the same order number the customer sees in their receipt.
+* New filter `ayudawp_euw_pre_resolve_wc_order` to short-circuit the resolver for plugins with non-meta numbering schemes (e.g. YITH Sequential Order Number) and `ayudawp_euw_resolve_wc_order` for late override or auditing.
 
 = 1.2.1 =
 * Fix: validate that the WooCommerce order exists when WC is active. The previous fallback used to accept submissions whose order number could not be matched against a real WC order — intended as an escape hatch for non-WC purchases — which let users submit withdrawals with completely invented order numbers. Sites that genuinely accept non-WC purchases can opt back into the lenient behaviour with the new `ayudawp_euw_allow_unverified_order` filter.
@@ -159,6 +171,9 @@ Actions:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+Compatibility fix for sites using order-number plugins (Sequential Order Numbers, Custom Order Numbers, etc.). The form now matches the number the customer sees in their receipt. Recommended update.
 
 = 1.2.1 =
 Validation fix: the form now correctly rejects submissions whose order number does not match a real WooCommerce order. Update strongly recommended.
