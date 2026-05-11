@@ -80,7 +80,7 @@ add_action( 'wp_enqueue_scripts', 'ayudawp_euw_enqueue_frontend' );
  *
  * @param string $hook Current admin page hook.
  */
-function ayudawp_euw_enqueue_admin( $hook ) {
+function ayudawp_euw_enqueue_admin( $hook ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 
