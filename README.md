@@ -12,7 +12,7 @@ WordPress plugin that adds the EU online withdrawal function required by Directi
 
 - Creates a public withdrawal page automatically on activation, with a fully-escaped form embedded via the `[ayudawp_withdrawal_form]` shortcode. The page is pre-filled with a neutral, multilingual sample template (with a clear "review with a legal advisor" disclaimer) so you can publish it after a quick review.
 - Adds a "Right of withdrawal" endpoint inside WooCommerce **My Account** with a per-order "Withdraw" button shown only while the configured withdrawal window is open.
-- Injects an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, on-hold and completed orders), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function.
+- Injects an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, completed and customer invoice), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function. The list of eligible order statuses is configurable from the settings page (defaults to Processing and Completed).
 - Validates the email/order pair against the WooCommerce database, including the deadline check.
 - **Configurable deadline** (1.2.0+): choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days from the settings page.
 - **Article 16 exclusions** (1.2.0+): mark individual products or whole categories as excluded from the right of withdrawal (custom-made, perishable, sealed digital, etc.). Requests on orders containing excluded items are flagged for the admin to review manually — never auto-rejected, since a partial withdrawal over the rest of the order can still be valid.
@@ -62,7 +62,8 @@ After activation:
 |--------|---------|
 | `ayudawp_euw_grace_days` | Number of additional days to add to the 14-day deadline check. Default: the value stored in **WooCommerce → EU Withdrawal → Withdrawal deadline → Grace days** (`0` if unset). The filter receives that value, so `return $days + N;` adds on top of the configured grace. |
 | `ayudawp_euw_skip_deadline_check` | Return `true` to disable the deadline check entirely. Receives the WC_Order as second argument. Default: `false`. |
-| `ayudawp_euw_email_ids` | Array of WooCommerce email IDs where the withdrawal notice is injected. Default: `customer_processing_order`, `customer_on_hold_order`, `customer_completed_order`. |
+| `ayudawp_euw_email_ids` | Array of WooCommerce email IDs where the withdrawal notice is injected. Default: `customer_processing_order`, `customer_completed_order`, `customer_invoice`. |
+| `ayudawp_euw_allowed_statuses` | Array of WooCommerce order statuses (without the `wc-` prefix) for which the withdrawal button and email notice are offered. Default: the value stored in **WooCommerce → EU Withdrawal → Eligible order statuses** (`processing`, `completed` if unset). Receives the value and the current `WC_Order` (when available). |
 
 | Action | Purpose |
 |--------|---------|
@@ -87,6 +88,14 @@ This plugin implements the **minimum compliant version** of EU Directive 2023/26
 The German interpretation of the directive (the strictest known so far) requires a two-step confirmation flow: a first button that opens the function, an intermediate page with the customer's data, and a second "confirm withdrawal" button that submits the request. This is not yet implemented because Spanish transposition is still pending as of May 2026 and a future update may be required to align with the final Spanish Real Decreto.
 
 ### Changelog
+
+**1.3.0**
+- New: configurable list of order statuses for which the withdrawal button and email notice are offered. All WooCommerce-registered statuses appear in the new **WooCommerce → EU Withdrawal → Eligible order statuses** section (custom statuses from shipping or fulfilment plugins included). Default: Processing and Completed.
+- New: the notice is now also injected in the **Customer invoice / Order details** email (the manually triggered one). It only renders when the order status matches the configured list, so the manual invoice can still be sent on any status without leaking the notice.
+- Change: the notice is no longer shipped in the **On-hold** email by default. On-hold typically means payment is still pending, so offering the right of withdrawal at that point would be misleading. Sites that want the previous behaviour can opt back in via the `ayudawp_euw_email_ids` filter.
+- New filter `ayudawp_euw_allowed_statuses` to override the eligible statuses programmatically (receives the array and the current `WC_Order` when available).
+- Internal: shared `ayudawp_euw_should_show_withdrawal( $order )` helper that combines deadline + status check; reused by the My Account action and the email notice.
+- Dev: PHP_CodeSniffer ruleset (`phpcs.xml.dist`), `composer.json` with WPCS and PHPCompatibilityWP dev deps, and a GitHub Actions workflow to run PHPCS on push and PRs. Thanks to [@webdados](https://github.com/webdados) for the suggestions on #3, #4 and #5.
 
 **1.2.2**
 - Fix: the form now resolves the order by its displayed number, not just by the internal post ID. Compatible with WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) and any plugin that stores the customer-facing number in the standard `_order_number` post meta.
@@ -129,9 +138,11 @@ Created and maintained by Fernando Tellado at [AyudaWP.com](https://ayudawp.com)
 
 For installation, configuration or custom development services, see [mantenimiento.ayudawp.com](https://mantenimiento.ayudawp.com).
 
-### Contributing
+### Feedback
 
-Bug reports, pull requests and translations are welcome. Open an issue first to discuss any non-trivial change.
+This plugin is about to be submitted to the [WordPress.org plugin directory](https://wordpress.org/plugins/), and once it lives there its public support channel will be the wp.org support forum. I'd rather not run a parallel issue/PR process here on GitHub — keeping both in sync would only make sense if the project were going to live on GitHub long-term, and it isn't. Apologies for the inconvenience if you came here to open an issue or a pull request.
+
+If you'd like to share feedback, report a bug, suggest a feature or send a fix, please email me at [github@ayudawp.com](mailto:github@ayudawp.com) — I read and reply to every message. Translations are very welcome too; send the `.po` file the same way. Thanks for understanding.
 
 ---
 
@@ -143,7 +154,7 @@ Plugin de WordPress que añade la función online de desistimiento exigida por l
 
 - Crea automáticamente al activar una página pública de desistimiento con el formulario embebido mediante el shortcode `[ayudawp_withdrawal_form]`. La página viene pre-rellenada con una plantilla legal de ejemplo, neutra y multilingüe, con un aviso claro de «revísalo con tu asesor legal» para que la publiques tras una revisión rápida.
 - Añade un endpoint «Derecho de desistimiento» dentro de **Mi cuenta** de WooCommerce, con un botón «Desistir» por pedido que solo aparece mientras la ventana configurada sigue abierta.
-- Inyecta un aviso «Solicitar desistimiento aquí» con enlace al formulario en los emails transaccionales de WooCommerce (pedido recibido, en espera y completado), cumpliendo la obligación del comerciante de informar al consumidor sobre la existencia y ubicación de la función de desistimiento.
+- Inyecta un aviso «Solicitar desistimiento aquí» con enlace al formulario en los emails transaccionales de WooCommerce (procesando, completado y factura del cliente), cumpliendo la obligación del comerciante de informar al consumidor sobre la existencia y ubicación de la función de desistimiento. La lista de estados de pedido elegibles es configurable desde la página de ajustes (por defecto: Procesando y Completado).
 - Valida el par email/pedido contra la base de datos de WooCommerce, incluyendo la comprobación del plazo.
 - **Plazo configurable** (1.2.0+): elige si la ventana de 14 días empieza desde la fecha del pedido o desde la fecha de completado de WooCommerce, y suma días de cortesía adicionales desde la página de ajustes.
 - **Exclusiones del Artículo 16** (1.2.0+): marca productos individuales o categorías enteras como excluidos del derecho de desistimiento (a medida, perecederos, contenido digital sellado, etc.). Las solicitudes sobre pedidos con productos excluidos quedan marcadas para revisión manual del admin — nunca se rechazan automáticamente, porque un desistimiento parcial sobre el resto del pedido puede seguir siendo válido.
@@ -193,7 +204,8 @@ Tras la activación:
 |--------|---------|
 | `ayudawp_euw_grace_days` | Días adicionales que se suman al plazo de 14 días. Por defecto: el valor guardado en **WooCommerce → EU Withdrawal → Withdrawal deadline → Grace days** (`0` si no está definido). El filtro recibe ese valor, así que `return $días + N;` suma encima de la cortesía configurada. |
 | `ayudawp_euw_skip_deadline_check` | Devuelve `true` para desactivar completamente la comprobación del plazo. Recibe el WC_Order como segundo argumento. Por defecto: `false`. |
-| `ayudawp_euw_email_ids` | Array de IDs de emails de WooCommerce donde se inyecta el aviso de desistimiento. Por defecto: `customer_processing_order`, `customer_on_hold_order`, `customer_completed_order`. |
+| `ayudawp_euw_email_ids` | Array de IDs de emails de WooCommerce donde se inyecta el aviso de desistimiento. Por defecto: `customer_processing_order`, `customer_completed_order`, `customer_invoice`. |
+| `ayudawp_euw_allowed_statuses` | Array de estados de pedido de WooCommerce (sin el prefijo `wc-`) para los que se ofrece el botón de «Mi cuenta» y el aviso en email. Por defecto: el valor guardado en **WooCommerce → EU Withdrawal → Eligible order statuses** (`processing`, `completed` si no está definido). Recibe el valor y el `WC_Order` actual (cuando está disponible). |
 
 | Acción | Para qué sirve |
 |--------|---------|
@@ -218,6 +230,14 @@ Este plugin implementa la **versión mínima conforme** con la Directiva (UE) 20
 La interpretación alemana de la directiva (la más estricta conocida hasta la fecha) exige un flujo de doble confirmación: un primer botón que abre la función, una página intermedia con los datos del cliente y un segundo botón «confirmar desistimiento» que envía la solicitud. Aún no está implementado porque la transposición española sigue pendiente a 1 de mayo de 2026, y es probable que se necesite una actualización futura para alinear el plugin con el Real Decreto definitivo.
 
 ### Registro de cambios
+
+**1.3.0**
+- Nuevo: lista configurable de estados de pedido para los que se ofrece el botón de desistimiento y el aviso en emails. Aparecen todos los estados registrados en WooCommerce en la nueva sección **WooCommerce → EU Withdrawal → Eligible order statuses** (incluidos los estados personalizados de plugins de envío o fulfillment). Por defecto: Procesando y Completado.
+- Nuevo: el aviso se inyecta también en el email **Factura del cliente / Detalles del pedido** (el que se dispara manualmente). Solo aparece cuando el estado del pedido coincide con la lista configurada, así que se puede seguir enviando la factura manual en cualquier estado sin que aparezca el aviso fuera de lugar.
+- Cambio: el aviso ya no se incluye por defecto en el email **En espera**. «En espera» suele significar que el pago aún no se ha confirmado, así que ofrecer el desistimiento ahí induce a confusión. Quien quiera recuperar el comportamiento anterior puede hacerlo con el filtro `ayudawp_euw_email_ids`.
+- Nuevo filtro `ayudawp_euw_allowed_statuses` para sobrescribir programáticamente los estados elegibles (recibe el array y el `WC_Order` actual cuando está disponible).
+- Interno: nueva función compartida `ayudawp_euw_should_show_withdrawal( $order )` que combina deadline + estado; la reutilizan el botón de «Mi cuenta» y el inyector de emails.
+- Desarrollo: ruleset de PHP_CodeSniffer (`phpcs.xml.dist`), `composer.json` con WPCS y PHPCompatibilityWP como deps de desarrollo y workflow de GitHub Actions que pasa PHPCS en push y PRs. Gracias a [@webdados](https://github.com/webdados) por las sugerencias en #3, #4 y #5.
 
 **1.2.2**
 - Corrección: el formulario ahora localiza el pedido por su número visible, no solo por el ID interno del post. Compatible con WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) y cualquier plugin que guarde el número que ve el cliente en la meta estándar `_order_number`.
@@ -260,6 +280,8 @@ Creado y mantenido por Fernando Tellado en [AyudaWP.com](https://ayudawp.com).
 
 Para servicios de instalación, configuración o desarrollo a medida, ver [mantenimiento.ayudawp.com](https://mantenimiento.ayudawp.com).
 
-### Contribuir
+### Feedback
 
-Se aceptan reportes de bugs, pull requests y traducciones. Abre un issue primero para discutir cualquier cambio no trivial.
+El plugin está a punto de subirse al [directorio de plugins de WordPress.org](https://wordpress.org/plugins/) y, una vez allí, el canal público de soporte será el foro del propio directorio. Prefiero no mantener en paralelo un proceso de issues y pull requests en GitHub: tenerlos sincronizados solo tendría sentido si el proyecto fuese a vivir aquí a largo plazo, y no es el caso. Disculpa las molestias si venías a abrir una issue o un PR.
+
+Para enviarme feedback, reportar un bug, sugerir una mejora o mandarme un parche, escríbeme a [github@ayudawp.com](mailto:github@ayudawp.com): leo y respondo todos los mensajes. Las traducciones también son muy bienvenidas; mándame el archivo `.po` por la misma vía. Gracias por entenderlo.

@@ -1,0 +1,31 @@
+{
+	"name": "fernandotellado/eu-withdrawal-compliance",
+	"description": "Adds the EU online withdrawal function required by Directive (EU) 2023/2673.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://github.com/fernandotellado/eu-withdrawal-compliance",
+	"authors": [
+		{
+			"name": "Fernando Tellado",
+			"homepage": "https://ayudawp.com"
+		}
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+	},
+	"scripts": {
+		"phpcs": "phpcs",
+		"phpcbf": "phpcbf"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"sort-packages": true
+	}
+}

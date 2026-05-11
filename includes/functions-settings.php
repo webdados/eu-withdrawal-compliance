@@ -82,6 +82,16 @@ function ayudawp_euw_register_settings() {
 
 	register_setting(
 		'ayudawp_euw_settings_group',
+		'ayudawp_euw_allowed_statuses',
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'ayudawp_euw_sanitize_allowed_statuses',
+			'default'           => array( 'processing', 'completed' ),
+		)
+	);
+
+	register_setting(
+		'ayudawp_euw_settings_group',
 		'ayudawp_euw_excluded_categories',
 		array(
 			'type'              => 'array',
@@ -111,6 +121,21 @@ function ayudawp_euw_register_settings() {
 		'ayudawp_euw_field_page_callback',
 		'ayudawp-euw-settings',
 		'ayudawp_euw_main_section'
+	);
+
+	add_settings_section(
+		'ayudawp_euw_eligibility_section',
+		__( 'Eligible order statuses', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_eligibility_section_callback',
+		'ayudawp-euw-settings'
+	);
+
+	add_settings_field(
+		'ayudawp_euw_allowed_statuses',
+		__( 'Show withdrawal option for', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_field_allowed_statuses_callback',
+		'ayudawp-euw-settings',
+		'ayudawp_euw_eligibility_section'
 	);
 
 	add_settings_section(
@@ -212,6 +237,95 @@ function ayudawp_euw_field_page_callback() {
 	);
 
 	echo '<p class="description">' . esc_html__( 'Page where the withdrawal form is published. Make sure it includes the [ayudawp_withdrawal_form] shortcode.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Eligibility section description.
+ */
+function ayudawp_euw_eligibility_section_callback() {
+
+	echo '<p>' . esc_html__( 'Pick the WooCommerce order statuses for which the withdrawal button and email notice should be offered. The choice applies to both the "My Account" button and the notice injected into transactional emails. Unchecking every status disables the prompt without disabling the plugin.', 'eu-withdrawal-compliance' ) . '</p>';
+}
+
+/**
+ * Sanitize the allowed statuses option.
+ *
+ * Accepts both prefixed (`wc-processing`) and unprefixed (`processing`) keys
+ * and stores the unprefixed form, aligned with `WC_Order::get_status()`.
+ *
+ * @param mixed $value Submitted value.
+ * @return array<int, string>
+ */
+function ayudawp_euw_sanitize_allowed_statuses( $value ) {
+
+	if ( ! is_array( $value ) ) {
+		return array();
+	}
+
+	$valid_keys = function_exists( 'wc_get_order_statuses' )
+		? array_map(
+			static function ( $key ) {
+				return 0 === strpos( $key, 'wc-' ) ? substr( $key, 3 ) : $key;
+			},
+			array_keys( wc_get_order_statuses() )
+		)
+		: array();
+
+	$normalized = array();
+
+	foreach ( $value as $candidate ) {
+
+		$candidate = sanitize_key( (string) $candidate );
+
+		if ( 0 === strpos( $candidate, 'wc-' ) ) {
+			$candidate = substr( $candidate, 3 );
+		}
+
+		if ( '' === $candidate ) {
+			continue;
+		}
+
+		if ( ! empty( $valid_keys ) && ! in_array( $candidate, $valid_keys, true ) ) {
+			continue;
+		}
+
+		$normalized[ $candidate ] = $candidate;
+	}
+
+	return array_values( $normalized );
+}
+
+/**
+ * Allowed statuses checkbox list callback.
+ */
+function ayudawp_euw_field_allowed_statuses_callback() {
+
+	if ( ! function_exists( 'wc_get_order_statuses' ) ) {
+		echo '<p class="description">' . esc_html__( 'WooCommerce is not active, so there are no order statuses to choose from.', 'eu-withdrawal-compliance' ) . '</p>';
+		return;
+	}
+
+	$statuses = wc_get_order_statuses();
+	$selected = (array) get_option( 'ayudawp_euw_allowed_statuses', array( 'processing', 'completed' ) );
+
+	echo '<fieldset>';
+	echo '<legend class="screen-reader-text">' . esc_html__( 'Order statuses eligible for withdrawal', 'eu-withdrawal-compliance' ) . '</legend>';
+
+	foreach ( $statuses as $key => $label ) {
+
+		$slug = 0 === strpos( $key, 'wc-' ) ? substr( $key, 3 ) : $key;
+
+		printf(
+			'<label style="display:block; margin-bottom:4px;"><input type="checkbox" name="ayudawp_euw_allowed_statuses[]" value="%1$s" %2$s> %3$s <code>%1$s</code></label>',
+			esc_attr( $slug ),
+			checked( in_array( $slug, $selected, true ), true, false ),
+			esc_html( $label )
+		);
+	}
+
+	echo '</fieldset>';
+
+	echo '<p class="description">' . esc_html__( 'Defaults to Processing and Completed. Plugins that register additional statuses (e.g. shipping plugins) appear here automatically.', 'eu-withdrawal-compliance' ) . '</p>';
 }
 
 /**

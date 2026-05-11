@@ -35,7 +35,12 @@ jobs:
             -x "*.DS_Store" \
             -x "*/node_modules/*" \
             -x "*/tests/*" \
+            -x "*/vendor/*" \
             -x "*/RELEASING.md" \
+            -x "*/composer.json" \
+            -x "*/composer.lock" \
+            -x "*/phpcs.xml.dist" \
+            -x "*/.phpcs.cache" \
             -x "*/*.zip"
 
       - name: Attach ZIP to the just-published Release

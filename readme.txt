@@ -4,7 +4,7 @@ Tags: woocommerce, eu, compliance, withdrawal, woocommerce, desistimiento
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ This plugin gives you a clean, ready-to-deploy implementation:
 * A public withdrawal page automatically created on activation, pre-filled with a neutral, multilingual sample template (with a clear "review with a legal advisor" disclaimer) and the form embedded via shortcode.
 * A `[ayudawp_withdrawal_form]` shortcode you can use anywhere in your site.
 * A "Right of withdrawal" endpoint inside the WooCommerce **My Account** area, with a per-order "Withdraw" button shown only while the configured withdrawal window is open.
-* Automatic injection of an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, on-hold and completed orders), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function.
+* Automatic injection of an "Exercise withdrawal right here" notice with link to the form inside WooCommerce transactional emails (processing, completed and customer invoice), to comply with the trader's obligation to inform consumers about the existence and placement of the withdrawal function. The list of eligible order statuses is configurable from the settings page (defaults to Processing and Completed).
 * Automatic verification of the order/email pair when WooCommerce is active, including the 14-day deadline check.
 * **Configurable deadline calculation**: choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days from the settings page.
 * **Article 16 exclusions**: mark individual products or whole categories as excluded from the right of withdrawal (custom-made, perishable, sealed digital, etc.). Requests on orders containing excluded items are flagged for the admin to review manually — never auto-rejected, since a partial withdrawal over the rest of the order can still be valid.
@@ -89,7 +89,7 @@ Yes. The form accepts both the internal WooCommerce order ID and the displayed o
 
 = Will the notice appear on every WooCommerce email? =
 
-No. By default the notice is only added to the customer-facing emails sent during the withdrawal window: order processing, on-hold and completed. Admin emails never receive the notice. You can change the list of emails using the `ayudawp_euw_email_ids` filter.
+No. By default the notice is only added to the customer-facing emails relevant to the withdrawal window: order processing, completed and customer invoice (the manually triggered one). Admin emails never receive the notice. The notice is also gated by the configured list of eligible order statuses (default: Processing and Completed) so the manual invoice email only carries it when the order is in one of those statuses. You can change the email list with the `ayudawp_euw_email_ids` filter and the status list under **WooCommerce → EU Withdrawal → Eligible order statuses** or with the `ayudawp_euw_allowed_statuses` filter.
 
 = Is the plugin available in Spanish? =
 
@@ -114,6 +114,7 @@ Filters:
 * `ayudawp_euw_grace_days` — extra days added to the 14-day deadline. The default is the value stored in settings; the filter receives that value, so returning `$days + N` adds on top of it.
 * `ayudawp_euw_skip_deadline_check` — return `true` to disable the deadline check entirely. Receives the WC_Order as second argument.
 * `ayudawp_euw_email_ids` — array of WooCommerce email IDs where the withdrawal notice is injected.
+* `ayudawp_euw_allowed_statuses` — array of order statuses (without the `wc-` prefix) for which the withdrawal button and email notice are offered. Receives the value stored in settings and the current `WC_Order` (when available).
 * `ayudawp_euw_allow_unverified_order` — return `true` to accept submissions whose order number cannot be matched against a real WooCommerce order. Useful for sites that also handle non-WC purchases.
 * `ayudawp_euw_pre_resolve_wc_order` — short-circuit the order resolver. Return a `WC_Order` instance to accept, `false` to reject, or `null` (default) to fall through to the built-in strategies. Useful for plugins that store the displayed order number outside the standard `_order_number` post meta (e.g. YITH Sequential Order Number, custom ERP integrations).
 * `ayudawp_euw_resolve_wc_order` — late filter that receives the resolved `WC_Order` (or `false`) and the raw reference, for auditing or last-chance overrides.
@@ -139,53 +140,18 @@ Actions:
 
 == Changelog ==
 
-= 1.2.2 =
-* Fix: the form now resolves the order by its displayed number, not just by the internal post ID. Compatible with WooCommerce Sequential Order Numbers, Sequential Order Numbers Pro, Custom Order Numbers for WooCommerce (WPFactory) and any plugin that stores the customer-facing number in the standard `_order_number` post meta.
-* Improvement: the "Withdraw" button on the WooCommerce **My Account → Orders** screen and the link injected into WooCommerce transactional emails now pre-fill the form with the same order number the customer sees in their receipt.
-* New filter `ayudawp_euw_pre_resolve_wc_order` to short-circuit the resolver for plugins with non-meta numbering schemes (e.g. YITH Sequential Order Number) and `ayudawp_euw_resolve_wc_order` for late override or auditing.
+For older entries (1.0.0 through 1.2.x), see [changelog.txt](https://plugins.svn.wordpress.org/eu-withdrawal-compliance/trunk/changelog.txt) in the plugin folder.
 
-= 1.2.1 =
-* Fix: validate that the WooCommerce order exists when WC is active. The previous fallback used to accept submissions whose order number could not be matched against a real WC order — intended as an escape hatch for non-WC purchases — which let users submit withdrawals with completely invented order numbers. Sites that genuinely accept non-WC purchases can opt back into the lenient behaviour with the new `ayudawp_euw_allow_unverified_order` filter.
-* Fix: translate the Scope value (Full/Partial) in the withdrawal detail metabox. It used to render the raw stored value in English even on translated sites.
-
-= 1.2.0 =
-* New: Article 16 exclusions. Mark individual products or whole WooCommerce categories as excluded from the right of withdrawal. Subcategories inherit the exclusion from the parent automatically. Withdrawal requests on orders containing excluded items are flagged for manual review (never auto-rejected) so a partial withdrawal over the rest of the order can still be valid.
-* New: instant-search picker for excluded categories in the settings page, with removable chips and instant auto-save.
-* New: inherited exclusion is reflected in the product editor — the per-product checkbox renders ticked and disabled with a note pointing to the category responsible for the inheritance.
-* New: verifiable SHA-256 receipt hash. Every submission generates a hash sent to the customer in the confirmation email and stored on the request. Acts as tamper-evident proof on a durable medium and can be recomputed later from the stored fields.
-* New: configurable withdrawal deadline. Choose whether the 14-day window starts from the order date or from the WooCommerce completion date, and add extra grace days directly from the settings page. The `ayudawp_euw_grace_days` filter still works on top of the stored value.
-* New: submission timestamp (UTC) stored alongside each request and surfaced in the request detail metabox.
-* Tweak: polished CPT labels ("Edit withdrawal", "New withdrawal", etc.).
-* Tweak: split `functions-admin.php` into `admin/columns.php`, `admin/metaboxes.php` and `admin/bulk-actions.php` for easier maintenance. No behavioural change.
-* i18n: updated Spanish (es_ES) translation with every new string.
-
-= 1.1.0 =
-* New: customer email notifications on every status change (accepted, rejected, completed).
-* New: optional admin comment forwarded to the customer on status change. Required for rejections, optional for completed requests.
-* New: WooCommerce order notes on every status change so the order timeline reflects the full withdrawal lifecycle.
-* New: bulk actions in the withdrawals listing to mark several requests as accepted, rejected or completed at once.
-* New: "Withdrawal" column in the WooCommerce orders screen (legacy and HPOS) showing the status of any linked request, toggleable from "Screen Options".
-* Tweak: trimmed inline styles in the WooCommerce email notice so it inherits the email template styles instead of forcing a coloured callout box.
-
-= 1.0.0 =
-* Initial release.
+= 1.3.0 =
+* New: configurable list of order statuses for which the withdrawal button and email notice are offered. All WooCommerce-registered statuses appear in the new **WooCommerce → EU Withdrawal → Eligible order statuses** section (custom statuses from shipping or fulfilment plugins included). Default: Processing and Completed.
+* New: the notice is now also injected in the **Customer invoice / Order details** email (the manually triggered one). It only renders when the order status matches the configured list, so the manual invoice can still be sent on any status without leaking the notice.
+* Change: the notice is no longer shipped in the **On-hold** email by default. On-hold typically means payment is still pending, so offering the right of withdrawal at that point would be misleading. Sites that want the previous behaviour can opt back in via the `ayudawp_euw_email_ids` filter.
+* New filter `ayudawp_euw_allowed_statuses` to override the eligible statuses programmatically (receives the array and the current `WC_Order` when available).
 
 == Upgrade Notice ==
 
-= 1.2.2 =
-Compatibility fix for sites using order-number plugins (Sequential Order Numbers, Custom Order Numbers, etc.). The form now matches the number the customer sees in their receipt. Recommended update.
-
-= 1.2.1 =
-Validation fix: the form now correctly rejects submissions whose order number does not match a real WooCommerce order. Update strongly recommended.
-
-= 1.2.0 =
-Adds Article 16 exclusions (with hierarchical category inheritance and an instant-search picker), verifiable SHA-256 receipt hashes for proof of submission, and configurable deadline settings (basis + grace days) directly from the settings page.
-
-= 1.1.0 =
-Adds customer notifications on status changes, bulk actions, a withdrawal column in the orders list and order notes for the full lifecycle.
-
-= 1.0.0 =
-First public version. Deploy before June 19, 2026 to comply with EU Directive 2023/2673.
+= 1.3.0 =
+Changes default emails carrying the withdrawal notice: the On-hold email no longer includes it (payment still pending) and the Customer invoice email now does. A new setting under WooCommerce → EU Withdrawal lets you pick which order statuses are eligible.
 
 == Support ==
 

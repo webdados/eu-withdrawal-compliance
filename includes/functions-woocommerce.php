@@ -224,6 +224,68 @@ function ayudawp_euw_get_order_deadline_timestamp( $order ) {
 }
 
 /**
+ * Return the order statuses for which the withdrawal button/notice is offered.
+ *
+ * Statuses are stored and returned without the `wc-` prefix to align with
+ * `WC_Order::get_status()`. Defaults to processing and completed.
+ *
+ * @param object|null $order Optional WC_Order, passed to the filter.
+ * @return array<int, string>
+ */
+function ayudawp_euw_get_allowed_statuses( $order = null ) {
+
+	$stored = get_option( 'ayudawp_euw_allowed_statuses', array( 'processing', 'completed' ) );
+
+	if ( ! is_array( $stored ) ) {
+		$stored = array( 'processing', 'completed' );
+	}
+
+	$statuses = array_values( array_filter( array_map( 'sanitize_key', $stored ) ) );
+
+	/**
+	 * Filter the order statuses considered eligible for the withdrawal flow.
+	 *
+	 * Use this filter to force a specific list programmatically, regardless of
+	 * the option saved in settings.
+	 *
+	 * @param array<int, string> $statuses Status keys without the `wc-` prefix.
+	 * @param object|null        $order    Current WC_Order, when available.
+	 */
+	return (array) apply_filters( 'ayudawp_euw_allowed_statuses', $statuses, $order );
+}
+
+/**
+ * Decide whether the withdrawal button/notice should be shown for an order.
+ *
+ * Combines the eligibility checks reused by the My Account action and the
+ * email notice injector: order present, status in the configured whitelist,
+ * and withdrawal deadline still open.
+ *
+ * @param object $order WC_Order instance.
+ * @return bool
+ */
+function ayudawp_euw_should_show_withdrawal( $order ) {
+
+	if ( ! $order || ! method_exists( $order, 'get_status' ) ) {
+		return false;
+	}
+
+	$allowed = ayudawp_euw_get_allowed_statuses( $order );
+
+	if ( empty( $allowed ) || ! in_array( $order->get_status(), $allowed, true ) ) {
+		return false;
+	}
+
+	$deadline = ayudawp_euw_get_order_deadline_timestamp( $order );
+
+	if ( ! $deadline || time() > $deadline ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
  * Add a private note to the WooCommerce order linking to the withdrawal log.
  *
  * @param int    $wc_order_id WC order ID.
@@ -388,10 +450,7 @@ function ayudawp_euw_add_order_action( $actions, $order ) {
 		return $actions;
 	}
 
-	// Only show while the configured withdrawal window is open.
-	$deadline = ayudawp_euw_get_order_deadline_timestamp( $order );
-
-	if ( ! $deadline || time() > $deadline ) {
+	if ( ! ayudawp_euw_should_show_withdrawal( $order ) ) {
 		return $actions;
 	}
 

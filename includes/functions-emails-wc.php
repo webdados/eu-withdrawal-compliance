@@ -31,11 +31,13 @@ function ayudawp_euw_inject_email_notice( $order, $sent_to_admin, $plain_text, $
 		return;
 	}
 
-	// Only on customer-facing emails relevant to the withdrawal period.
+	// Only on customer-facing emails relevant to the withdrawal period. The
+	// manual `customer_invoice` email can fire on any status, so its order is
+	// validated by `ayudawp_euw_should_show_withdrawal()` below.
 	$allowed_emails = array(
 		'customer_processing_order',
 		'customer_completed_order',
-		'customer_on_hold_order',
+		'customer_invoice',
 	);
 
 	$email_id = isset( $email->id ) ? $email->id : '';
@@ -48,6 +50,11 @@ function ayudawp_euw_inject_email_notice( $order, $sent_to_admin, $plain_text, $
 	$allowed_emails = apply_filters( 'ayudawp_euw_email_ids', $allowed_emails );
 
 	if ( ! in_array( $email_id, $allowed_emails, true ) ) {
+		return;
+	}
+
+	// Order-level eligibility: configured statuses + deadline still open.
+	if ( ! ayudawp_euw_should_show_withdrawal( $order ) ) {
 		return;
 	}
 
