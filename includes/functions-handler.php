@@ -129,11 +129,11 @@ function ayudawp_euw_handle_submission() {
 		'ayudawp_euw_after_submission',
 		$post_id,
 		array(
-			'name'     => $name,
-			'email'    => $email,
-			'order'    => $order,
-			'scope'    => $scope,
-			'details'  => $details,
+			'name'    => $name,
+			'email'   => $email,
+			'order'   => $order,
+			'scope'   => $scope,
+			'details' => $details,
 		)
 	);
 

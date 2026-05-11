@@ -71,12 +71,12 @@ function ayudawp_euw_send_customer_email( $email, $name, $order, $scope, $receip
 /**
  * Send notification to the shop admin.
  *
- * @param int                          $post_id        Withdrawal CPT ID.
- * @param string                       $name           Customer name.
- * @param string                       $email          Customer email.
- * @param string                       $order          Order reference.
- * @param string                       $scope          Withdrawal scope.
- * @param string                       $details        Free-text details.
+ * @param int                              $post_id        Withdrawal CPT ID.
+ * @param string                           $name           Customer name.
+ * @param string                           $email          Customer email.
+ * @param string                           $order          Order reference.
+ * @param string                           $scope          Withdrawal scope.
+ * @param string                           $details        Free-text details.
  * @param array<int, array<string, mixed>> $excluded_items Items in the order
  *     that match an Article 16 exclusion, if any.
  */

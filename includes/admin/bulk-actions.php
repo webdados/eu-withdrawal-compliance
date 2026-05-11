@@ -88,7 +88,7 @@ function ayudawp_euw_handle_bulk_actions( $redirect_to, $action, $post_ids ) {
 		update_post_meta( $post_id, '_ayudawp_euw_status', $new_status );
 		ayudawp_euw_handle_status_transition( $post_id, $new_status, '' );
 
-		$count++;
+		++$count;
 	}
 
 	$redirect_to = add_query_arg( 'ayudawp_euw_bulk_done', $count, $redirect_to );

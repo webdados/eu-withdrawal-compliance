@@ -361,10 +361,12 @@ function ayudawp_euw_field_excluded_categories_callback() {
 					</span>
 					<button type="button"
 						class="ayudawp-euw-chip__remove"
-						aria-label="<?php
+						aria-label="
+						<?php
 							/* translators: %s: category name. */
 							echo esc_attr( sprintf( __( 'Remove %s from exclusions', 'eu-withdrawal-compliance' ), $term->name ) );
-						?>">×</button>
+						?>
+						">×</button>
 				</li>
 			<?php endforeach; ?>
 		</ul>

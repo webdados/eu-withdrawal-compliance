@@ -49,91 +49,91 @@ class Aeuw_Promo_Banner {
 	 */
 	private function get_plugins_catalog() {
 		return array(
-			'vigilante'                                                => array(
+			'vigilante'                              => array(
 				'icon'        => 'dashicons-shield',
 				'title'       => __( 'Complete WordPress security', 'eu-withdrawal-compliance' ),
 				'description' => __( 'All-in-one security plugin: firewall, login protection, security headers, 2FA, file integrity monitoring, and activity logging.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Vigilant', 'eu-withdrawal-compliance' ),
 			),
-			'gozer'                                                    => array(
+			'gozer'                                  => array(
 				'icon'        => 'dashicons-admin-network',
 				'title'       => __( 'Restrict site access', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Force visitors to log in before accessing your site with extensive exception controls for pages, posts, and user roles.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Gozer', 'eu-withdrawal-compliance' ),
 			),
-			'vigia'                                                    => array(
+			'vigia'                                  => array(
 				'icon'        => 'dashicons-visibility',
 				'title'       => __( 'Monitor AI crawler activity', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Track which AI bots visit your site, analyze their behavior, and take control with blocking rules and robots.txt management.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install VigIA', 'eu-withdrawal-compliance' ),
 			),
-			'ai-share-summarize'                                       => array(
+			'ai-share-summarize'                     => array(
 				'icon'        => 'dashicons-share',
 				'title'       => __( 'Boost your AI presence', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Add social sharing and AI summarize buttons. Help visitors share your content and let AIs learn from your site while getting backlinks.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install AI Share & Summarize', 'eu-withdrawal-compliance' ),
 			),
-			'ai-content-signals'                                       => array(
+			'ai-content-signals'                     => array(
 				'icon'        => 'dashicons-flag',
 				'title'       => __( 'Control AI content usage', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Cloudflare-endorsed plugin to define how AI systems can use your content: for training, search results, or both.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install AI Content Signals', 'eu-withdrawal-compliance' ),
 			),
-			'wpo-tweaks'                                               => array(
+			'wpo-tweaks'                             => array(
 				'icon'        => 'dashicons-performance',
 				'title'       => __( 'Speed up your WordPress', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Comprehensive performance optimizations: critical CSS, lazy loading, cache rules, and 30+ tweaks with zero configuration.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Zero Config Performance', 'eu-withdrawal-compliance' ),
 			),
-			'no-gutenberg'                                             => array(
+			'no-gutenberg'                           => array(
 				'icon'        => 'dashicons-edit-page',
 				'title'       => __( 'Back to Classic Editor', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Completely remove Gutenberg, FSE styles, and block widgets. Restore the classic editing experience with better performance.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install No Gutenberg', 'eu-withdrawal-compliance' ),
 			),
-			'anticache'                                                => array(
+			'anticache'                              => array(
 				'icon'        => 'dashicons-hammer',
 				'title'       => __( 'Development toolkit', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Bypass all caching during development. Auto-detects cache plugins, enables debug mode, and includes maintenance screen.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Anti-Cache Kit', 'eu-withdrawal-compliance' ),
 			),
-			'auto-capitalize-names-ayudawp'                            => array(
+			'auto-capitalize-names-ayudawp'          => array(
 				'icon'        => 'dashicons-editor-textcolor',
 				'title'       => __( 'Fix customer names', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Auto-capitalize names and addresses in WordPress and WooCommerce. Keep invoices and reports professionally formatted.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Auto Capitalize', 'eu-withdrawal-compliance' ),
 			),
-			'easy-actions-scheduler-cleaner-ayudawp'                   => array(
+			'easy-actions-scheduler-cleaner-ayudawp' => array(
 				'icon'        => 'dashicons-database-remove',
 				'title'       => __( 'Clean Action Scheduler', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Remove millions of completed, failed, and old actions from WooCommerce Action Scheduler. Reduce database size instantly.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Scheduler Cleaner', 'eu-withdrawal-compliance' ),
 			),
-			'native-sitemap-customizer'                                => array(
+			'native-sitemap-customizer'              => array(
 				'icon'        => 'dashicons-networking',
 				'title'       => __( 'Customize your sitemap', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Control WordPress native sitemap: exclude post types, taxonomies, specific posts, and authors. No bloat, just options.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Sitemap Customizer', 'eu-withdrawal-compliance' ),
 			),
-			'post-visibility-control'                                  => array(
+			'post-visibility-control'                => array(
 				'icon'        => 'dashicons-hidden',
 				'title'       => __( 'Control post visibility', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Hide posts from homepage, archives, feeds, or REST API while keeping them accessible via direct URL.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Post Visibility', 'eu-withdrawal-compliance' ),
 			),
-			'widget-visibility-control'                                => array(
+			'widget-visibility-control'              => array(
 				'icon'        => 'dashicons-welcome-widgets-menus',
 				'title'       => __( 'Smart widget display', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Show or hide widgets based on pages, post types, categories, user roles, and more. Works with any theme.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Widget Visibility', 'eu-withdrawal-compliance' ),
 			),
-			'search-replace-text-blocks'                               => array(
+			'search-replace-text-blocks'             => array(
 				'icon'        => 'dashicons-search',
 				'title'       => __( 'Search & replace in blocks', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Find and replace text across all your Gutenberg blocks. Bulk edit content without touching the database directly.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Search Replace Blocks', 'eu-withdrawal-compliance' ),
 			),
-			'seo-read-more-buttons-ayudawp'                            => array(
+			'seo-read-more-buttons-ayudawp'          => array(
 				'icon'        => 'dashicons-admin-links',
 				'title'       => __( 'Better read more links', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Customize excerpt "read more" links with buttons, custom text, and nofollow option. Improve CTR and SEO.', 'eu-withdrawal-compliance' ),
@@ -145,43 +145,43 @@ class Aeuw_Promo_Banner {
 				'description' => __( 'Display only the lowest price for WooCommerce variable products instead of confusing price ranges.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Lowest Price', 'eu-withdrawal-compliance' ),
 			),
-			'multiple-sale-prices-scheduler'                           => array(
+			'multiple-sale-prices-scheduler'         => array(
 				'icon'        => 'dashicons-calendar-alt',
 				'title'       => __( 'Schedule sale prices', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Set multiple future sale prices for WooCommerce products. Plan promotions in advance with start and end dates.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Sale Scheduler', 'eu-withdrawal-compliance' ),
 			),
-			'easy-store-management-ayudawp'                            => array(
+			'easy-store-management-ayudawp'          => array(
 				'icon'        => 'dashicons-store',
 				'title'       => __( 'Simplify store management', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Clean up WordPress admin for Store Managers. Hide unnecessary menus, keep only orders, products, and customers, plus quick access shortcuts.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Easy Store', 'eu-withdrawal-compliance' ),
 			),
-			'lightbox-images-for-divi'                                 => array(
+			'lightbox-images-for-divi'               => array(
 				'icon'        => 'dashicons-format-gallery',
 				'title'       => __( 'Lightbox for Divi', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Add native lightbox functionality to Divi theme images. No jQuery, fast loading, fully customizable.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Divi Lightbox', 'eu-withdrawal-compliance' ),
 			),
-			'scheduled-posts-showcase'                                 => array(
+			'scheduled-posts-showcase'               => array(
 				'icon'        => 'dashicons-clock',
 				'title'       => __( 'Show visitors what is coming up next', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Display your scheduled and future posts on the frontend to gain and retain visits.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Scheduled Posts Showcase', 'eu-withdrawal-compliance' ),
 			),
-			'periscopio'                                               => array(
+			'periscopio'                             => array(
 				'icon'        => 'dashicons-rss',
 				'title'       => __( 'Custom Dashboard News', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Add your own custom feeds and links to the news and events dashboard widget and replace WordPress default one.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install Periscope', 'eu-withdrawal-compliance' ),
 			),
-			'noindexer'                                                => array(
+			'noindexer'                              => array(
 				'icon'        => 'dashicons-editor-unlink',
 				'title'       => __( 'Control search indexing', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Tell search engines what not to index. Apply noindex per post, page, or entire post types with simple override controls.', 'eu-withdrawal-compliance' ),
 				'button'      => __( 'Install NoIndexer', 'eu-withdrawal-compliance' ),
 			),
-			'core-diet'                                                => array(
+			'core-diet'                              => array(
 				'icon'        => 'dashicons-food',
 				'title'       => __( 'Reduce WordPress Fat', 'eu-withdrawal-compliance' ),
 				'description' => __( 'Put your WordPress on a diet. Disable unnecessary default features to improve performance and reduce bloat.', 'eu-withdrawal-compliance' ),

@@ -42,15 +42,42 @@ add_action( 'add_meta_boxes', 'ayudawp_euw_register_metabox' );
 function ayudawp_euw_metabox_content( $post ) {
 
 	$fields = array(
-		'name'         => array( 'label' => __( 'Customer name', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_name' ),
-		'email'        => array( 'label' => __( 'Email', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_email' ),
-		'order'        => array( 'label' => __( 'Order number', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_order' ),
-		'order_date'   => array( 'label' => __( 'Order date', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_order_date' ),
-		'scope'        => array( 'label' => __( 'Scope', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_scope' ),
-		'submitted_at' => array( 'label' => __( 'Submitted at (UTC)', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_submitted_at' ),
-		'receipt_hash' => array( 'label' => __( 'Receipt hash (SHA-256)', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_receipt_hash' ),
-		'ip'           => array( 'label' => __( 'IP address', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_ip' ),
-		'user_agent'   => array( 'label' => __( 'User agent', 'eu-withdrawal-compliance' ), 'meta' => '_ayudawp_euw_user_agent' ),
+		'name'         => array(
+			'label' => __( 'Customer name', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_name',
+		),
+		'email'        => array(
+			'label' => __( 'Email', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_email',
+		),
+		'order'        => array(
+			'label' => __( 'Order number', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_order',
+		),
+		'order_date'   => array(
+			'label' => __( 'Order date', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_order_date',
+		),
+		'scope'        => array(
+			'label' => __( 'Scope', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_scope',
+		),
+		'submitted_at' => array(
+			'label' => __( 'Submitted at (UTC)', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_submitted_at',
+		),
+		'receipt_hash' => array(
+			'label' => __( 'Receipt hash (SHA-256)', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_receipt_hash',
+		),
+		'ip'           => array(
+			'label' => __( 'IP address', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_ip',
+		),
+		'user_agent'   => array(
+			'label' => __( 'User agent', 'eu-withdrawal-compliance' ),
+			'meta'  => '_ayudawp_euw_user_agent',
+		),
 	);
 
 	echo '<table class="ayudawp-euw-meta-table"><tbody>';
@@ -106,8 +133,8 @@ function ayudawp_euw_metabox_status( $post ) {
 
 	wp_nonce_field( 'ayudawp_euw_save_status', 'ayudawp_euw_status_nonce' );
 
-	$status   = get_post_meta( $post->ID, '_ayudawp_euw_status', true );
-	$status   = $status ? $status : 'pending';
+	$status = get_post_meta( $post->ID, '_ayudawp_euw_status', true );
+	$status = $status ? $status : 'pending';
 
 	$statuses = array(
 		'pending'   => __( 'Pending', 'eu-withdrawal-compliance' ),

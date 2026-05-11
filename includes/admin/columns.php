@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ayudawp_euw_admin_columns( $columns ) {
 
 	$new = array(
-		'cb'                       => $columns['cb'] ?? '',
-		'title'                    => __( 'Reference', 'eu-withdrawal-compliance' ),
-		'ayudawp_euw_customer'     => __( 'Customer', 'eu-withdrawal-compliance' ),
-		'ayudawp_euw_email'        => __( 'Email', 'eu-withdrawal-compliance' ),
-		'ayudawp_euw_order'        => __( 'Order', 'eu-withdrawal-compliance' ),
-		'ayudawp_euw_scope'        => __( 'Scope', 'eu-withdrawal-compliance' ),
-		'ayudawp_euw_status'       => __( 'Status', 'eu-withdrawal-compliance' ),
-		'date'                     => __( 'Date', 'eu-withdrawal-compliance' ),
+		'cb'                   => $columns['cb'] ?? '',
+		'title'                => __( 'Reference', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_customer' => __( 'Customer', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_email'    => __( 'Email', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_order'    => __( 'Order', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_scope'    => __( 'Scope', 'eu-withdrawal-compliance' ),
+		'ayudawp_euw_status'   => __( 'Status', 'eu-withdrawal-compliance' ),
+		'date'                 => __( 'Date', 'eu-withdrawal-compliance' ),
 	);
 
 	return $new;
@@ -53,8 +53,8 @@ function ayudawp_euw_admin_column_content( $column, $post_id ) {
 			break;
 
 		case 'ayudawp_euw_order':
-			$order   = get_post_meta( $post_id, '_ayudawp_euw_order', true );
-			$wc_id   = absint( get_post_meta( $post_id, '_ayudawp_euw_wc_order_id', true ) );
+			$order = get_post_meta( $post_id, '_ayudawp_euw_order', true );
+			$wc_id = absint( get_post_meta( $post_id, '_ayudawp_euw_wc_order_id', true ) );
 
 			if ( $wc_id && function_exists( 'wc_get_order' ) ) {
 				$wc_order = wc_get_order( $wc_id );
