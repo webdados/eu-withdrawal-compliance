@@ -84,7 +84,7 @@ function ayudawp_euw_metabox_content( $post ) {
 			printf(
 				'<li>%1$s × %2$d</li>',
 				esc_html( $name ),
-				$quantity
+				intval( $quantity )
 			);
 		}
 		echo '</ul>';
