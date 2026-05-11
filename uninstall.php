@@ -55,7 +55,7 @@ if ( defined( 'AYUDAWP_EUW_DELETE_DATA' ) && AYUDAWP_EUW_DELETE_DATA ) {
 		)
 	);
 
-	foreach ( $posts_to_delete as $post_id ) {
-		wp_delete_post( $post_id, true );
+	foreach ( $posts_to_delete as $post_to_delete_id ) {
+		wp_delete_post( $post_to_delete_id, true );
 	}
 }
