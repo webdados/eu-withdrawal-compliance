@@ -456,7 +456,7 @@ function ayudawp_euw_get_request_for_order( $wc_order_id ) {
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'meta_query'             => array(
+			'meta_query'             => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				array(
 					'key'   => '_ayudawp_euw_wc_order_id',
 					'value' => $wc_order_id,
