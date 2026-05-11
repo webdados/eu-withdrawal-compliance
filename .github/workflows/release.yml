@@ -36,6 +36,7 @@ jobs:
             -x "*/node_modules/*" \
             -x "*/tests/*" \
             -x "*/RELEASING.md" \
+            -x "*/.phpcs.xml" \
             -x "*/*.zip"
 
       - name: Attach ZIP to the just-published Release
