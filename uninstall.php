@@ -46,7 +46,7 @@ delete_option( 'ayudawp_euw_version' );
 // Optionally delete all withdrawal records.
 if ( defined( 'AYUDAWP_EUW_DELETE_DATA' ) && AYUDAWP_EUW_DELETE_DATA ) {
 
-	$posts = get_posts(
+	$posts_to_delete = get_posts(
 		array(
 			'post_type'      => 'ayudawp_withdrawal',
 			'post_status'    => 'any',
@@ -55,7 +55,7 @@ if ( defined( 'AYUDAWP_EUW_DELETE_DATA' ) && AYUDAWP_EUW_DELETE_DATA ) {
 		)
 	);
 
-	foreach ( $posts as $post_id ) {
+	foreach ( $posts_to_delete as $post_id ) {
 		wp_delete_post( $post_id, true );
 	}
 }
