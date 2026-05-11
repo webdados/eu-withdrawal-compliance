@@ -316,7 +316,7 @@ function ayudawp_euw_field_allowed_statuses_callback() {
 		$slug = 0 === strpos( $key, 'wc-' ) ? substr( $key, 3 ) : $key;
 
 		printf(
-			'<label style="display:block; margin-bottom:4px;"><input type="checkbox" name="ayudawp_euw_allowed_statuses[]" value="%1$s" %2$s> %3$s <code>%1$s</code></label>',
+			'<label style="display:block; margin-bottom:4px;"><input type="checkbox" name="ayudawp_euw_allowed_statuses[]" value="%1$s" %2$s> %3$s (<code>%1$s</code>)</label>',
 			esc_attr( $slug ),
 			checked( in_array( $slug, $selected, true ), true, false ),
 			esc_html( $label )
